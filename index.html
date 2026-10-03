@@ -51,7 +51,7 @@
 
   /* Cabeçalho: nomes + 3 fotos + data */
   .hero { text-align: center; padding: 64px 16px 56px; }
-  .names { font-family: "Cinzel", var(--serif); font-weight: 400; font-size: clamp(26px, 5vw, 54px); letter-spacing: .1em; text-transform: uppercase; line-height: 1.2; }
+  .names { font-family: "Cinzel", var(--serif); font-weight: 400; font-size: calc(clamp(26px, 5vw, 54px) * var(--name-scale, 1)); letter-spacing: .1em; text-transform: uppercase; line-height: 1.2; }
   .names .plus { color: var(--leaf); margin: 0 .3em; }
   .hero-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1060px; margin: 44px auto 40px; }
   .hero-photos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--bg-alt); }
@@ -60,7 +60,12 @@
   @media (max-width: 600px) { .hero { padding-top: 44px; } .hero-photos { gap: 6px; margin: 28px auto; } }
 
   /* Faixa da contagem regressiva */
-  .countdown-band { background: var(--accent); color: var(--white); text-align: center; padding: 52px 16px; }
+  .countdown-band { position: relative; overflow: hidden; background: #0B0F1E; color: var(--white); text-align: center; padding: 72px 16px 84px; }
+  .stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  @media (max-width: 600px) { .stage-caption { white-space: normal; text-align: center; width: max-content; line-height: 1.5; border-radius: 12px; } }
+  .band-tint { position: absolute; inset: 0; background: rgba(62,92,70,.28); }
+  .band-content { position: relative; z-index: 2; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+  .stage-caption { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); bottom: 14px; max-width: calc(100% - 32px); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; background: rgba(10,8,20,.55); backdrop-filter: blur(4px); padding: 6px 14px; border-radius: 999px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .countdown-band .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; opacity: .8; }
   .countdown { display: flex; justify-content: center; gap: clamp(14px, 4vw, 36px); margin: 22px 0 32px; }
   .countdown div { min-width: 64px; }
@@ -247,12 +252,17 @@
 </header>
 
 <div class="countdown-band">
-  <div class="kicker">Faltam</div>
-  <div class="countdown" id="countdown" aria-live="off"></div>
-  <div class="hero-ctas">
-    <a href="#rsvp" class="btn btn-light">Confirmar presença</a>
-    <a href="#presentes" class="btn">Lista de presentes</a>
+  <canvas class="stage-canvas" id="stageCanvas" aria-hidden="true"></canvas>
+  <div class="band-tint"></div>
+  <div class="band-content">
+    <div class="kicker">Faltam</div>
+    <div class="countdown" id="countdown" aria-live="off"></div>
+    <div class="hero-ctas">
+      <a href="#rsvp" class="btn btn-light">Confirmar presença</a>
+      <a href="#presentes" class="btn">Lista de presentes</a>
+    </div>
   </div>
+  <div class="stage-caption" id="stageCaption"></div>
 </div>
 
 <section id="historia">
@@ -388,6 +398,7 @@
   </div>
 </div>
 
+<script src="fontes.js"></script>
 <script>
 /* ============================================================
    CONFIGURAÇÃO: edite aqui textos, datas, locais e presentes
@@ -398,6 +409,7 @@ const CONFIG = {
   dateISO: "2027-05-01T19:30:00-04:00",          // Cuiabá = UTC-4
   city: "Cuiabá · MT",
   rsvpDeadline: "1º de abril de 2027",
+  nameFont: "cinzel",                            // opções em fontes.html (?fonte=id para testar)
   heroPhotos: ["fotos/header-1.webp", "fotos/header-2.webp", "fotos/header-3.webp"],
 
   story: {
@@ -414,6 +426,12 @@ const CONFIG = {
       { title: "O sim!", when: "01.05.2027 · Cuiabá" }
     ]
   },
+
+  // Palcos do Tomorrowland na faixa da contagem. shape: "castle" | "orb" | "arch"; hues: cores (0–360)
+  stages: [
+    { name: "Tomorrowland Brasil 2023", note: "onde tudo começou", shape: "castle", hues: [275, 45, 190] },
+    { name: "Tomorrowland 2025", note: "o pedido", shape: "orb", hues: [205, 320, 50] }
+  ],
 
   // Volta ao mundo: 1 foto por país. Os slots até `tripGoal` aparecem como "carregando".
   tripGoal: 10,
@@ -446,6 +464,7 @@ const CONFIG = {
   stays: [
     { name: "Hotel próximo", meta: "A definir", text: "Em breve indicaremos hotéis próximos ao Mahalo, com tarifa para convidados se conseguirmos negociar.", tag: "Em breve", link: "#" },
     { name: "Chegando de avião", meta: "Aeroporto Marechal Rondon (CGB)", text: "O aeroporto fica em Várzea Grande, a cerca de 20–30 minutos do Mahalo de carro ou aplicativo.", link: "https://www.google.com/maps/search/?api=1&query=Aeroporto+Marechal+Rondon" },
+    { name: "Salão de beleza", meta: "Cabelo e maquiagem", text: "Vamos indicar salões em Cuiabá para quem quiser se arrumar no dia. Agende com antecedência: é sábado e feriado, e a agenda lota rápido.", tag: "Em breve" },
     { name: "Airbnb na região", meta: "Opções variadas · $–$$$", text: "Boa alternativa para grupos e famílias que queiram dividir uma casa perto do Quilombo.", link: "https://www.airbnb.com.br" }
   ],
 
@@ -493,6 +512,9 @@ const shortDate = eventDate.toLocaleDateString("pt-BR", { day: "2-digit", month:
 $("#monogram").textContent = CONFIG.monogram;
 $("#footerMono").textContent = CONFIG.monogram;
 $("#heroNames").innerHTML = `${esc(CONFIG.couple.a)}<span class="plus">+</span>${esc(CONFIG.couple.b)}`;
+const fontId = new URLSearchParams(location.search).get("fonte") || CONFIG.nameFont;
+const nameFont = NAME_FONTS.find(f => f.id === fontId);
+if (nameFont && nameFont.id !== "cinzel") applyNameFont($("#heroNames"), nameFont);
 $("#heroPhotos").innerHTML = CONFIG.heroPhotos.map((src, i) => `<img src="${src}" alt="${esc(CONFIG.couple.a)} e ${esc(CONFIG.couple.b)}, foto ${i + 1}">`).join("");
 $("#heroDate").textContent = shortDate;
 $("#heroCity").textContent = CONFIG.city;
@@ -507,6 +529,157 @@ function tick() {
     .map(([n, l]) => `<div><strong>${String(n).padStart(2, "0")}</strong><span>${l}</span></div>`).join("");
 }
 tick(); setInterval(tick, 1000);
+
+// Animação dos palcos (canvas) na faixa da contagem
+(function stageAnimation() {
+  const cv = $("#stageCanvas"), ctx = cv.getContext("2d"), caption = $("#stageCaption");
+  const stages = CONFIG.stages, SCENE = 9, BPM = 126;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = 0, H = 0, crowd = [], stars = [], sparks = [], lastBurst = 0, lastIdx = -1, visible = true, t0 = performance.now();
+  const hsl = (h, s, l, a = 1) => `hsla(${h},${s}%,${l}%,${a})`;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    crowd = Array.from({ length: Math.ceil(W / 13) + 1 }, (_, i) => ({ x: i * 13 + Math.random() * 8, h: 16 + Math.random() * 18, ph: Math.random() * 6.28, hands: Math.random() < .5 }));
+    stars = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H * .55, r: Math.random() * 1.1 + .2, ph: Math.random() * 6.28 }));
+  }
+
+  // Cada formato desenha a estrutura e devolve os pontos de onde saem os lasers
+  const shapes = {
+    castle(cx, base, S, sh, hue, pulse, t) {
+      const towers = [[-.5, .08, .42], [-.34, .1, .6], [-.17, .1, .78], [0, .15, 1], [.17, .1, .78], [.34, .1, .6], [.5, .08, .42]];
+      const tips = [];
+      towers.forEach(([dx, w, h], i) => {
+        const x = cx + dx * S, tw = w * S, th = h * sh * .82, top = base - th;
+        ctx.fillStyle = "#140d26";
+        ctx.fillRect(x - tw / 2, top, tw, th);
+        ctx.beginPath(); ctx.moveTo(x - tw * .6, top); ctx.lineTo(x, top - tw * .95); ctx.lineTo(x + tw * .6, top); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = hsl(hue[i % 2 ? 1 : 0], 90, 65, .45 + .5 * pulse);
+        for (let k = 1; k <= 3; k++) ctx.fillRect(x - tw * .12, top + th * k / 4.2, tw * .24, th * .08);
+        tips.push([x, top - tw * .95]);
+      });
+      // Telão central em arco
+      const g = ctx.createLinearGradient(cx - S * .07, 0, cx + S * .07, 0);
+      g.addColorStop(0, hsl(hue[0] + t * 20, 90, 55)); g.addColorStop(1, hsl(hue[2] + t * 20, 90, 60));
+      ctx.fillStyle = g; ctx.globalAlpha = .55 + .45 * pulse;
+      ctx.beginPath(); ctx.ellipse(cx, base - sh * .3, S * .05, sh * .26, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+      return tips;
+    },
+    orb(cx, base, S, sh, hue, pulse, t) {
+      const r = sh * .42, cy = base - sh * .5;
+      const g = ctx.createRadialGradient(cx - r * .3, cy - r * .3, r * .1, cx, cy, r);
+      g.addColorStop(0, hsl(hue[0], 90, 70)); g.addColorStop(.6, hsl(hue[1], 80, 40)); g.addColorStop(1, hsl(hue[1], 70, 15));
+      ctx.globalAlpha = .75 + .25 * pulse; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.strokeStyle = hsl(hue[2], 95, 65, .8); ctx.lineWidth = 2;
+      for (let k = 0; k < 2; k++) { ctx.beginPath(); ctx.ellipse(cx, cy, r * (1.45 + k * .3), r * .32, -.18 + Math.sin(t * .4) * .08 + k * .1, 0, Math.PI * 2); ctx.stroke(); }
+      ctx.fillStyle = "#140d26";
+      ctx.beginPath(); ctx.moveTo(cx - S * .58, base); ctx.lineTo(cx - S * .4, base - sh * .22); ctx.lineTo(cx + S * .4, base - sh * .22); ctx.lineTo(cx + S * .58, base); ctx.closePath(); ctx.fill();
+      [-.5, -.32, .32, .5].forEach(dx => ctx.fillRect(cx + dx * S - 8, base - sh * .55, 16, sh * .55));
+      return [[cx - S * .5, base - sh * .55], [cx - S * .32, base - sh * .55], [cx, cy - r], [cx + S * .32, base - sh * .55], [cx + S * .5, base - sh * .55]];
+    },
+    arch(cx, base, S, sh, hue, pulse, t) {
+      ctx.fillStyle = "#140d26";
+      ctx.beginPath(); ctx.ellipse(cx, base, S * .55, sh * .92, 0, Math.PI, Math.PI * 2); ctx.fill();
+      const g = ctx.createLinearGradient(cx - S * .4, 0, cx + S * .4, 0);
+      [0, .5, 1].forEach((p, i) => g.addColorStop(p, hsl(hue[i] + t * 25, 90, 55)));
+      ctx.globalAlpha = .5 + .5 * pulse; ctx.fillStyle = g;
+      ctx.beginPath(); ctx.ellipse(cx, base, S * .4, sh * .68, 0, Math.PI, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.strokeStyle = hsl(hue[2], 95, 70, .9); ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(cx, base, S * .55, sh * .92, 0, Math.PI, Math.PI * 2); ctx.stroke();
+      return [-.9, -.6, -.3, 0, .3, .6, .9].map(a => [cx + Math.sin(a) * S * .55, base - Math.cos(a) * sh * .92]);
+    }
+  };
+
+  function drawScene(stage, t) {
+    const hue = stage.hues, beat = (t * BPM / 60) % 1, pulse = Math.pow(1 - beat, 3);
+    const cx = W / 2, base = H * .86, S = Math.min(W * .62, H * 2.1), sh = H * .7;
+
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, hsl(hue[0], 60, 10)); bg.addColorStop(1, hsl(hue[0], 55, 26));
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    stars.forEach(s => { ctx.fillStyle = `rgba(255,255,255,${.25 + .35 * Math.sin(t * 2 + s.ph) ** 2})`; ctx.fillRect(s.x, s.y, s.r, s.r); });
+
+    const glow = ctx.createRadialGradient(cx, base - sh * .4, 0, cx, base - sh * .4, S * .9);
+    glow.addColorStop(0, hsl(hue[1], 90, 58, .5 + .25 * pulse)); glow.addColorStop(1, hsl(hue[1], 85, 55, 0));
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
+
+    // Canhões de luz laterais
+    ctx.globalCompositeOperation = "lighter";
+    [[0, H], [W, H]].forEach(([x, y], i) => {
+      const a = -Math.PI / 2 + (i ? -1 : 1) * (.35 + .25 * Math.sin(t * .7 + i));
+      const g = ctx.createLinearGradient(x, y, x + Math.cos(a) * H * 1.4, y + Math.sin(a) * H * 1.4);
+      g.addColorStop(0, hsl(hue[2], 85, 72, .35)); g.addColorStop(1, hsl(hue[2], 80, 70, 0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(a - .09) * H * 1.6, y + Math.sin(a - .09) * H * 1.6);
+      ctx.lineTo(x + Math.cos(a + .09) * H * 1.6, y + Math.sin(a + .09) * H * 1.6); ctx.closePath(); ctx.fill();
+    });
+    ctx.globalCompositeOperation = "source-over";
+
+    const emitters = (shapes[stage.shape] || shapes.castle)(cx, base, S, sh, hue, pulse, t);
+
+    // Lasers
+    ctx.globalCompositeOperation = "lighter";
+    const L = Math.max(W, H) * 1.2;
+    emitters.forEach(([x, y], i) => {
+      for (let k = 0; k < 2; k++) {
+        const a = -Math.PI / 2 + Math.sin(t * .9 + i * 1.3 + k * 2.1) * (.55 + k * .35);
+        const h = hue[(i + k) % 3], g = ctx.createLinearGradient(x, y, x + Math.cos(a) * L, y + Math.sin(a) * L);
+        g.addColorStop(0, hsl(h, 100, 68, .8 + .2 * pulse)); g.addColorStop(1, hsl(h, 100, 68, 0));
+        ctx.strokeStyle = g; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(a) * L, y + Math.sin(a) * L); ctx.stroke();
+      }
+    });
+
+    // Fogos
+    if (t - lastBurst > 1.4) {
+      lastBurst = t;
+      const bx = W * (.15 + Math.random() * .7), by = H * (.12 + Math.random() * .25), h = hue[Math.floor(Math.random() * 3)];
+      for (let k = 0; k < 34; k++) { const a = k / 34 * Math.PI * 2, v = 40 + Math.random() * 50; sparks.push({ x: bx, y: by, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, h }); }
+    }
+    sparks = sparks.filter(p => p.life > 0);
+    sparks.forEach(p => {
+      p.x += p.vx / 60; p.y += p.vy / 60; p.vy += 30 / 60; p.life -= 1 / 90;
+      ctx.fillStyle = hsl(p.h, 100, 72, p.life); ctx.fillRect(p.x, p.y, 2.5, 2.5);
+    });
+    ctx.globalCompositeOperation = "source-over";
+
+    // Plateia
+    ctx.fillStyle = "#040308"; ctx.strokeStyle = "#040308"; ctx.lineWidth = 3; ctx.lineCap = "round";
+    crowd.forEach(c => {
+      const top = H - c.h, bob = Math.sin((t * BPM / 60) * Math.PI * 2 + c.ph) * 3;
+      ctx.beginPath(); ctx.arc(c.x, top + bob, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillRect(c.x - 6, top + 4 + bob, 12, c.h);
+      if (c.hands) { ctx.beginPath(); ctx.moveTo(c.x - 5, top + 8 + bob); ctx.lineTo(c.x - 9, top - 12 + bob * 2); ctx.moveTo(c.x + 5, top + 8 + bob); ctx.lineTo(c.x + 9, top - 12 - bob * 2); ctx.stroke(); }
+    });
+  }
+
+  function frame(now) {
+    if (!W) resize();
+    const t = (now - t0) / 1000, n = stages.length;
+    const idx = Math.floor(t / SCENE) % n, local = t % SCENE;
+    if (idx !== lastIdx) { lastIdx = idx; caption.textContent = `${stages[idx].name} · ${stages[idx].note}`; }
+    drawScene(stages[idx], t);
+    if (n > 1) {
+      const fade = Math.min(1, local / .8, (SCENE - local) / .8);
+      if (fade < 1) { ctx.fillStyle = `rgba(0,0,0,${1 - fade})`; ctx.fillRect(0, 0, W, H); }
+    }
+    if (!reduce && visible) requestAnimationFrame(frame);
+  }
+
+  window.addEventListener("resize", () => { resize(); if (reduce) frame(t0 + 2000); });
+  if ("IntersectionObserver" in window && !reduce) {
+    new IntersectionObserver(([e]) => { const was = visible; visible = e.isIntersecting && !document.hidden; if (visible && !was) requestAnimationFrame(frame); }).observe(cv);
+  }
+  document.addEventListener("visibilitychange", () => { const was = visible; visible = !document.hidden; if (visible && !was && !reduce) requestAnimationFrame(frame); });
+  resize();
+  if (reduce) { frame(t0 + 2000); caption.textContent = stages.map(s => s.name).join(" · "); }
+  else requestAnimationFrame(frame);
+})();
 
 // História
 $("#storyText").innerHTML = CONFIG.story.paragraphs.map(p => `<p>${esc(p)}</p>`).join("");
@@ -585,7 +758,7 @@ $("#stays").innerHTML = CONFIG.stays.map(s => `
   <div class="card stay">
     ${s.tag ? `<span class="tag">${esc(s.tag)}</span>` : ""}
     <h4>${esc(s.name)}</h4><div class="meta">${esc(s.meta)}</div><p>${esc(s.text)}</p>
-    <a class="btn btn-outline" href="${s.link}" target="_blank" rel="noopener">Ver opção</a>
+    ${s.link && s.link !== "#" ? `<a class="btn btn-outline" href="${s.link}" target="_blank" rel="noopener">Ver opção</a>` : ""}
   </div>`).join("");
 
 // Presentes

@@ -7,7 +7,7 @@
 <title>Nosso Casamento · 01.05.2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     /* Paleta copo-de-leite: brancos + verdes de folha */
@@ -21,15 +21,21 @@
     --line: #DFE5DA;
     --white: #FFFFFF;
     --radius: 14px;
-    --serif: "Cormorant Garamond", Georgia, serif;
+    --serif: "Cormorant Garamond", Georgia, serif;   /* texto corrido e nomes */
+    --display: "Bodoni Moda", "Didot", serif;         /* destaques */
     --sans: "Montserrat", system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
-  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--serif); font-size: 18px; font-weight: 500; line-height: 1.6; font-variant-numeric: lining-nums; -webkit-font-smoothing: antialiased; }
   img { max-width: 100%; display: block; }
   a { color: inherit; }
   button { font-family: inherit; cursor: pointer; }
+
+  /* Rótulos pequenos em caixa-alta seguem em sans */
+  .mvp-bar, .nav-links a, .countdown span, .btn, .kicker, .event-card .time, .stay .meta, .tag, .chip, .gift-cat, .gift-inst,
+  label, .hero-city, .trip .cap span, .trip .hint, .stage-caption, .pay-tabs button, .notice, .world-progress span { font-family: var(--sans); font-weight: 400; }
+  .btn, .kicker, .tag, .gift-cat, label { font-weight: 500; }
 
   /* Faixa MVP */
   .mvp-bar { background: var(--ink); color: #EDE6DA; text-align: center; font-size: 12px; letter-spacing: .04em; padding: 6px 16px; }
@@ -51,25 +57,32 @@
 
   /* Cabeçalho: nomes + 3 fotos + data */
   .hero { text-align: center; padding: 64px 16px 56px; }
-  .names { font-family: "Cinzel", var(--serif); font-weight: 400; font-size: calc(clamp(26px, 5vw, 54px) * var(--name-scale, 1)); letter-spacing: .1em; text-transform: uppercase; line-height: 1.2; }
-  .names .plus { color: var(--leaf); margin: 0 .3em; }
+  .names { font-family: var(--serif); font-weight: 300; font-size: calc(clamp(42px, 7.6vw, 88px) * var(--name-scale, 1)); letter-spacing: .005em; line-height: 1.1; }
+  .names .plus { color: var(--leaf); margin: 0 .22em; font-weight: 300; }
   .hero-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1060px; margin: 44px auto 40px; }
   .hero-photos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--bg-alt); }
-  .hero-date { font-weight: 600; font-size: clamp(24px, 3.4vw, 36px); letter-spacing: .14em; color: #444; }
+  .hero-date { font-family: var(--display); font-weight: 400; font-size: clamp(24px, 3.4vw, 36px); letter-spacing: .12em; color: #3a3a3a; }
   .hero-city { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
   @media (max-width: 600px) { .hero { padding-top: 44px; } .hero-photos { gap: 6px; margin: 28px auto; } }
 
   /* Faixa da contagem regressiva */
-  .countdown-band { position: relative; overflow: hidden; background: #0B0F1E; color: var(--white); text-align: center; padding: 72px 16px 84px; }
-  .stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .countdown-band { position: relative; overflow: hidden; background: #10141A; color: var(--white); text-align: center; min-height: clamp(440px, 50vw, 640px); display: flex; align-items: center; justify-content: center; padding: 72px 16px 96px; }
+  .stage-slides { position: absolute; inset: 0; }
+  .stage-slides img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.03); transition: opacity 1.8s ease; will-change: transform, opacity; }
+  .stage-slides img.active { opacity: 1; animation: kenburns 11s ease-out forwards; }
+  @keyframes kenburns { from { transform: scale(1.16) translateY(2%); } to { transform: scale(1.03) translateY(0); } }
+  .stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+  .band-tint { position: absolute; inset: 0; background:
+      radial-gradient(ellipse 60% 55% at 50% 50%, rgba(10,16,12,.38), transparent 75%),
+      linear-gradient(180deg, rgba(20,32,24,.30), rgba(62,92,70,.22) 45%, rgba(14,22,17,.55)); }
+  .band-content { position: relative; z-index: 2; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+  .stage-caption { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); bottom: 18px; max-width: calc(100% - 32px); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; background: rgba(10,14,12,.5); backdrop-filter: blur(6px); padding: 7px 16px; border-radius: 999px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   @media (max-width: 600px) { .stage-caption { white-space: normal; text-align: center; width: max-content; line-height: 1.5; border-radius: 12px; } }
-  .band-tint { position: absolute; inset: 0; background: rgba(62,92,70,.28); }
-  .band-content { position: relative; z-index: 2; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
-  .stage-caption { position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); bottom: 14px; max-width: calc(100% - 32px); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; background: rgba(10,8,20,.55); backdrop-filter: blur(4px); padding: 6px 14px; border-radius: 999px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media (prefers-reduced-motion: reduce) { .stage-slides img.active { animation: none; } }
   .countdown-band .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; opacity: .8; }
   .countdown { display: flex; justify-content: center; gap: clamp(14px, 4vw, 36px); margin: 22px 0 32px; }
   .countdown div { min-width: 64px; }
-  .countdown strong { display: block; font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 400; line-height: 1; }
+  .countdown strong { display: block; font-family: var(--display); font-size: clamp(32px, 6vw, 54px); font-weight: 400; line-height: 1; }
   .countdown span { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: .85; }
   .btn { display: inline-block; border: 1px solid currentColor; background: transparent; color: inherit; padding: 13px 26px; border-radius: 999px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; transition: all .2s; }
   .btn-solid { background: var(--accent); border-color: var(--accent); color: var(--white); }
@@ -86,19 +99,19 @@
   .narrow { max-width: 760px; margin: 0 auto; }
   .section-head { text-align: center; margin-bottom: 52px; }
   .section-head .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--leaf); font-weight: 500; }
-  .section-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5vw, 52px); line-height: 1.15; margin-top: 8px; }
-  .section-head p { color: var(--muted); max-width: 620px; margin: 14px auto 0; }
+  .section-head h2 { font-family: var(--display); font-weight: 400; font-size: clamp(28px, 4.2vw, 46px); line-height: 1.2; letter-spacing: .04em; text-transform: uppercase; margin-top: 10px; }
+  .section-head p { color: var(--muted); max-width: 640px; margin: 16px auto 0; font-style: italic; font-size: 20px; line-height: 1.5; }
   .divider { width: 56px; height: 1px; background: var(--leaf); margin: 22px auto 0; }
 
   /* História */
   .story { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: start; max-width: 980px; margin: 0 auto; }
-  .story-text p { margin-bottom: 16px; font-size: 17px; }
-  .story-text p:first-child::first-letter { font-family: "Cinzel", var(--serif); font-size: 3.2em; float: left; line-height: .9; margin: 6px 10px 0 0; color: var(--accent); }
+  .story-text p { margin-bottom: 16px; font-size: 20px; }
+  .story-text p:first-child::first-letter { font-family: var(--display); font-size: 3.2em; float: left; line-height: .9; margin: 6px 10px 0 0; color: var(--accent); }
   .timeline { border-left: 1px solid var(--line); padding-left: 22px; }
   .timeline li { list-style: none; position: relative; margin-bottom: 18px; }
   .timeline li::before { content: ""; position: absolute; left: -27px; top: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--leaf); }
-  .timeline strong { font-family: var(--serif); font-size: 20px; font-weight: 500; display: block; line-height: 1.3; }
-  .timeline span { color: var(--muted); font-size: 14px; }
+  .timeline strong { font-family: var(--serif); font-size: 22px; font-weight: 600; display: block; line-height: 1.3; }
+  .timeline span { color: var(--muted); font-size: 16px; font-style: italic; }
   @media (max-width: 860px) { .story { grid-template-columns: 1fr; gap: 32px; } }
 
   /* Volta ao mundo: 1 foto por país, meta de 10 */
@@ -117,7 +130,7 @@
   .trip.no-photo .hint { position: absolute; top: 14px; left: 14px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dark); }
   .trip.loading { background: var(--white); border: 1.5px dashed var(--leaf); color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 14px; cursor: default; }
   .trip.loading strong { font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--ink); margin-top: 14px; }
-  .trip.loading span { font-size: 12px; }
+  .trip.loading span { font-size: 16px; font-style: italic; }
   .spinner { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin 1.3s linear infinite; }
   .trip.loading.goal { border-style: solid; border-color: var(--accent); background: var(--bg-alt); }
   .trip.loading.goal .emoji { font-size: 30px; }
@@ -135,30 +148,30 @@
 
   /* Evento */
   .events { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 680px; margin: 0 auto; }
-  .event-card .highlight { display: inline-block; font-size: 13px; color: var(--accent-dark); background: var(--bg-alt); border-radius: 10px; padding: 10px 16px; margin: -6px 0 22px; }
+  .event-card .highlight { display: inline-block; font-size: 17px; font-style: italic; color: var(--accent-dark); background: var(--bg-alt); border-radius: 10px; padding: 10px 18px; margin: -6px 0 22px; }
   .card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 32px; }
   .event-card { text-align: center; }
   .event-card .icon { font-size: 30px; color: var(--leaf); }
-  .event-card h3 { font-family: var(--serif); font-size: 32px; font-weight: 400; margin: 6px 0 2px; }
+  .event-card h3 { font-family: var(--display); font-size: clamp(22px, 3vw, 28px); font-weight: 400; letter-spacing: .05em; text-transform: uppercase; margin: 8px 0 4px; }
   .event-card .time { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-dark); font-weight: 500; }
-  .event-card .place { font-family: var(--serif); font-size: 22px; margin-top: 18px; }
-  .event-card address { font-style: normal; color: var(--muted); font-size: 14px; margin: 4px 0 22px; }
+  .event-card .place { font-family: var(--serif); font-size: 26px; font-weight: 600; margin-top: 18px; }
+  .event-card address { font-style: normal; color: var(--muted); font-size: 17px; margin: 4px 0 22px; }
   .event-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .btn-outline { color: var(--accent-dark); border-color: var(--accent); padding: 10px 20px; font-size: 11px; }
   .btn-outline:hover { background: var(--accent); color: var(--white); }
   .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
   .info-grid .card { padding: 28px 26px; }
-  .info-grid h4 { font-family: var(--serif); font-size: 24px; font-weight: 500; margin-bottom: 6px; }
-  .info-grid p { color: var(--muted); font-size: 14px; }
+  .info-grid h4 { font-family: var(--serif); font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+  .info-grid p { color: var(--muted); font-size: 17px; }
   .swatches { display: flex; gap: 8px; margin-top: 12px; }
   .swatches i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line); }
   @media (max-width: 860px) { .events, .info-grid { grid-template-columns: 1fr; } }
 
   /* Hospedagem */
   .stays { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-  .stay h4 { font-family: var(--serif); font-size: 24px; font-weight: 500; }
+  .stay h4 { font-family: var(--serif); font-size: 26px; font-weight: 600; }
   .stay .meta { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--leaf); margin: 2px 0 10px; }
-  .stay p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+  .stay p { color: var(--muted); font-size: 17px; margin-bottom: 14px; }
   .tag { display: inline-block; font-size: 11px; background: var(--bg-alt); color: var(--accent-dark); border-radius: 999px; padding: 3px 10px; margin-bottom: 14px; font-weight: 500; }
 
   /* Presentes */
@@ -182,7 +195,7 @@
   .modal-box { background: var(--bg); border-radius: var(--radius); width: 100%; max-width: 460px; max-height: 92vh; overflow-y: auto; padding: 30px 26px; position: relative; }
   .modal-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 26px; color: var(--muted); }
   .modal h3 { font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.2; padding-right: 24px; }
-  .modal .sum { color: var(--muted); font-size: 14px; margin: 4px 0 18px; }
+  .modal .sum { color: var(--muted); font-size: 18px; margin: 4px 0 18px; }
   .pay-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 16px; }
   .pay-tabs button { border: 1px solid var(--line); background: var(--white); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--muted); }
   .pay-tabs button.active { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
@@ -196,7 +209,7 @@
   .form { display: grid; gap: 16px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 6px; }
-  input, select, textarea { width: 100%; font: inherit; font-weight: 400; font-size: 15px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  input, select, textarea { width: 100%; font: inherit; font-weight: 500; font-size: 17px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(138,154,123,.18); }
   textarea { resize: vertical; min-height: 90px; }
   .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -204,7 +217,7 @@
   .radio-group input { width: auto; }
   .form .btn { justify-self: center; color: var(--white); margin-top: 6px; }
   .success { text-align: center; padding: 20px 0; display: none; }
-  .success h3 { font-family: var(--serif); font-size: 34px; font-weight: 400; }
+  .success h3 { font-family: var(--display); font-size: 30px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; }
   .success p { color: var(--muted); }
   @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
 
@@ -252,6 +265,7 @@
 </header>
 
 <div class="countdown-band">
+  <div class="stage-slides" id="stageSlides" aria-hidden="true"></div>
   <canvas class="stage-canvas" id="stageCanvas" aria-hidden="true"></canvas>
   <div class="band-tint"></div>
   <div class="band-content">
@@ -409,7 +423,7 @@ const CONFIG = {
   dateISO: "2027-05-01T19:30:00-04:00",          // Cuiabá = UTC-4
   city: "Cuiabá · MT",
   rsvpDeadline: "1º de abril de 2027",
-  nameFont: "cinzel",                            // opções em fontes.html (?fonte=id para testar)
+  nameFont: "amour",                             // opções em fontes.html (?fonte=id para testar)
   heroPhotos: ["fotos/header-1.webp", "fotos/header-2.webp", "fotos/header-3.webp"],
 
   story: {
@@ -427,10 +441,12 @@ const CONFIG = {
     ]
   },
 
-  // Palcos do Tomorrowland na faixa da contagem. shape: "castle" | "orb" | "arch"; hues: cores (0–360)
+  // Palcos do Tomorrowland na faixa da contagem (fotos com crossfade + pirotecnia animada).
+  // focus = ponto da foto que fica centralizado; pyro = matizes (0–360) dos fogos.
   stages: [
-    { name: "Tomorrowland Brasil 2023", note: "onde tudo começou", shape: "castle", hues: [275, 45, 190] },
-    { name: "Tomorrowland 2025", note: "o pedido", shape: "orb", hues: [205, 320, 50] }
+    { name: "Tomorrowland 2023", note: "onde tudo começou", image: "fotos/palco-1.webp", focus: "50% 55%", pyro: [45, 38] },
+    { name: "Tomorrowland 2024", note: "", image: "fotos/palco-2.webp", focus: "50% 50%", pyro: [350, 20] },
+    { name: "Tomorrowland 2025", note: "o pedido", image: "fotos/palco-3.webp", focus: "50% 45%", pyro: [28, 280] }
   ],
 
   // Volta ao mundo: 1 foto por país. Os slots até `tripGoal` aparecem como "carregando".
@@ -514,7 +530,7 @@ $("#footerMono").textContent = CONFIG.monogram;
 $("#heroNames").innerHTML = `${esc(CONFIG.couple.a)}<span class="plus">+</span>${esc(CONFIG.couple.b)}`;
 const fontId = new URLSearchParams(location.search).get("fonte") || CONFIG.nameFont;
 const nameFont = NAME_FONTS.find(f => f.id === fontId);
-if (nameFont && nameFont.id !== "cinzel") applyNameFont($("#heroNames"), nameFont);
+if (nameFont && nameFont.id !== "amour") applyNameFont($("#heroNames"), nameFont);
 $("#heroPhotos").innerHTML = CONFIG.heroPhotos.map((src, i) => `<img src="${src}" alt="${esc(CONFIG.couple.a)} e ${esc(CONFIG.couple.b)}, foto ${i + 1}">`).join("");
 $("#heroDate").textContent = shortDate;
 $("#heroCity").textContent = CONFIG.city;
@@ -530,155 +546,113 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-// Animação dos palcos (canvas) na faixa da contagem
-(function stageAnimation() {
-  const cv = $("#stageCanvas"), ctx = cv.getContext("2d"), caption = $("#stageCaption");
-  const stages = CONFIG.stages, SCENE = 9, BPM = 126;
+// Faixa dos palcos: fotos em crossfade com zoom lento + pirotecnia em canvas transparente por cima
+(function stageShow() {
+  const slides = $("#stageSlides"), cv = $("#stageCanvas"), ctx = cv.getContext("2d"), caption = $("#stageCaption");
+  const stages = CONFIG.stages, SCENE = 9000;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let W = 0, H = 0, crowd = [], stars = [], sparks = [], lastBurst = 0, lastIdx = -1, visible = true, t0 = performance.now();
-  const hsl = (h, s, l, a = 1) => `hsla(${h},${s}%,${l}%,${a})`;
 
+  slides.innerHTML = stages.map(st => `<img src="${st.image}" alt="" loading="lazy" style="object-position:${st.focus || "50% 50%"}">`).join("");
+  const imgs = [...slides.children];
+  let idx = 0;
+  function show(i) {
+    idx = i % stages.length;
+    imgs.forEach((im, k) => im.classList.toggle("active", k === idx));
+    const st = stages[idx];
+    caption.textContent = st.note ? `${st.name} · ${st.note}` : st.name;
+  }
+  show(0);
+  if (reduce) return;
+  setInterval(() => { if (!document.hidden) show(idx + 1); }, SCENE);
+
+  // Pirotecnia
+  let W = 0, H = 0, shells = [], sparks = [], visible = true, last = 0, nextVolley = 0;
+  const rand = (a, b) => a + Math.random() * (b - a);
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    crowd = Array.from({ length: Math.ceil(W / 13) + 1 }, (_, i) => ({ x: i * 13 + Math.random() * 8, h: 16 + Math.random() * 18, ph: Math.random() * 6.28, hands: Math.random() < .5 }));
-    stars = Array.from({ length: Math.round(W * H / 2600) }, () => ({ x: Math.random() * W, y: Math.random() * H * .55, r: Math.random() * 1.1 + .2, ph: Math.random() * 6.28 }));
   }
 
-  // Cada formato desenha a estrutura e devolve os pontos de onde saem os lasers
-  const shapes = {
-    castle(cx, base, S, sh, hue, pulse, t) {
-      const towers = [[-.5, .08, .42], [-.34, .1, .6], [-.17, .1, .78], [0, .15, 1], [.17, .1, .78], [.34, .1, .6], [.5, .08, .42]];
-      const tips = [];
-      towers.forEach(([dx, w, h], i) => {
-        const x = cx + dx * S, tw = w * S, th = h * sh * .82, top = base - th;
-        ctx.fillStyle = "#140d26";
-        ctx.fillRect(x - tw / 2, top, tw, th);
-        ctx.beginPath(); ctx.moveTo(x - tw * .6, top); ctx.lineTo(x, top - tw * .95); ctx.lineTo(x + tw * .6, top); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = hsl(hue[i % 2 ? 1 : 0], 90, 65, .45 + .5 * pulse);
-        for (let k = 1; k <= 3; k++) ctx.fillRect(x - tw * .12, top + th * k / 4.2, tw * .24, th * .08);
-        tips.push([x, top - tw * .95]);
-      });
-      // Telão central em arco
-      const g = ctx.createLinearGradient(cx - S * .07, 0, cx + S * .07, 0);
-      g.addColorStop(0, hsl(hue[0] + t * 20, 90, 55)); g.addColorStop(1, hsl(hue[2] + t * 20, 90, 60));
-      ctx.fillStyle = g; ctx.globalAlpha = .55 + .45 * pulse;
-      ctx.beginPath(); ctx.ellipse(cx, base - sh * .3, S * .05, sh * .26, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 1;
-      return tips;
-    },
-    orb(cx, base, S, sh, hue, pulse, t) {
-      const r = sh * .42, cy = base - sh * .5;
-      const g = ctx.createRadialGradient(cx - r * .3, cy - r * .3, r * .1, cx, cy, r);
-      g.addColorStop(0, hsl(hue[0], 90, 70)); g.addColorStop(.6, hsl(hue[1], 80, 40)); g.addColorStop(1, hsl(hue[1], 70, 15));
-      ctx.globalAlpha = .75 + .25 * pulse; ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
-      ctx.strokeStyle = hsl(hue[2], 95, 65, .8); ctx.lineWidth = 2;
-      for (let k = 0; k < 2; k++) { ctx.beginPath(); ctx.ellipse(cx, cy, r * (1.45 + k * .3), r * .32, -.18 + Math.sin(t * .4) * .08 + k * .1, 0, Math.PI * 2); ctx.stroke(); }
-      ctx.fillStyle = "#140d26";
-      ctx.beginPath(); ctx.moveTo(cx - S * .58, base); ctx.lineTo(cx - S * .4, base - sh * .22); ctx.lineTo(cx + S * .4, base - sh * .22); ctx.lineTo(cx + S * .58, base); ctx.closePath(); ctx.fill();
-      [-.5, -.32, .32, .5].forEach(dx => ctx.fillRect(cx + dx * S - 8, base - sh * .55, 16, sh * .55));
-      return [[cx - S * .5, base - sh * .55], [cx - S * .32, base - sh * .55], [cx, cy - r], [cx + S * .32, base - sh * .55], [cx + S * .5, base - sh * .55]];
-    },
-    arch(cx, base, S, sh, hue, pulse, t) {
-      ctx.fillStyle = "#140d26";
-      ctx.beginPath(); ctx.ellipse(cx, base, S * .55, sh * .92, 0, Math.PI, Math.PI * 2); ctx.fill();
-      const g = ctx.createLinearGradient(cx - S * .4, 0, cx + S * .4, 0);
-      [0, .5, 1].forEach((p, i) => g.addColorStop(p, hsl(hue[i] + t * 25, 90, 55)));
-      ctx.globalAlpha = .5 + .5 * pulse; ctx.fillStyle = g;
-      ctx.beginPath(); ctx.ellipse(cx, base, S * .4, sh * .68, 0, Math.PI, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
-      ctx.strokeStyle = hsl(hue[2], 95, 70, .9); ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.ellipse(cx, base, S * .55, sh * .92, 0, Math.PI, Math.PI * 2); ctx.stroke();
-      return [-.9, -.6, -.3, 0, .3, .6, .9].map(a => [cx + Math.sin(a) * S * .55, base - Math.cos(a) * sh * .92]);
-    }
-  };
-
-  function drawScene(stage, t) {
-    const hue = stage.hues, beat = (t * BPM / 60) % 1, pulse = Math.pow(1 - beat, 3);
-    const cx = W / 2, base = H * .86, S = Math.min(W * .62, H * 2.1), sh = H * .7;
-
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, hsl(hue[0], 60, 10)); bg.addColorStop(1, hsl(hue[0], 55, 26));
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-
-    stars.forEach(s => { ctx.fillStyle = `rgba(255,255,255,${.25 + .35 * Math.sin(t * 2 + s.ph) ** 2})`; ctx.fillRect(s.x, s.y, s.r, s.r); });
-
-    const glow = ctx.createRadialGradient(cx, base - sh * .4, 0, cx, base - sh * .4, S * .9);
-    glow.addColorStop(0, hsl(hue[1], 90, 58, .5 + .25 * pulse)); glow.addColorStop(1, hsl(hue[1], 85, 55, 0));
-    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
-
-    // Canhões de luz laterais
-    ctx.globalCompositeOperation = "lighter";
-    [[0, H], [W, H]].forEach(([x, y], i) => {
-      const a = -Math.PI / 2 + (i ? -1 : 1) * (.35 + .25 * Math.sin(t * .7 + i));
-      const g = ctx.createLinearGradient(x, y, x + Math.cos(a) * H * 1.4, y + Math.sin(a) * H * 1.4);
-      g.addColorStop(0, hsl(hue[2], 85, 72, .35)); g.addColorStop(1, hsl(hue[2], 80, 70, 0));
-      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(x, y);
-      ctx.lineTo(x + Math.cos(a - .09) * H * 1.6, y + Math.sin(a - .09) * H * 1.6);
-      ctx.lineTo(x + Math.cos(a + .09) * H * 1.6, y + Math.sin(a + .09) * H * 1.6); ctx.closePath(); ctx.fill();
-    });
-    ctx.globalCompositeOperation = "source-over";
-
-    const emitters = (shapes[stage.shape] || shapes.castle)(cx, base, S, sh, hue, pulse, t);
-
-    // Lasers
-    ctx.globalCompositeOperation = "lighter";
-    const L = Math.max(W, H) * 1.2;
-    emitters.forEach(([x, y], i) => {
-      for (let k = 0; k < 2; k++) {
-        const a = -Math.PI / 2 + Math.sin(t * .9 + i * 1.3 + k * 2.1) * (.55 + k * .35);
-        const h = hue[(i + k) % 3], g = ctx.createLinearGradient(x, y, x + Math.cos(a) * L, y + Math.sin(a) * L);
-        g.addColorStop(0, hsl(h, 100, 68, .8 + .2 * pulse)); g.addColorStop(1, hsl(h, 100, 68, 0));
-        ctx.strokeStyle = g; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(a) * L, y + Math.sin(a) * L); ctx.stroke();
+  function volley(now) {
+    const hues = stages[idx].pyro || [45];
+    if (Math.random() < .45) {
+      // Leque saindo do centro do palco, como nos fogos de abertura
+      const n = 6 + Math.floor(Math.random() * 4), cx = W / 2 + rand(-W * .04, W * .04), by = H * .8;
+      for (let k = 0; k < n; k++) {
+        const a = -Math.PI / 2 + (k / (n - 1) - .5) * 1.15, v = rand(.95, 1.1) * H * 1.25;
+        shells.push({ x: cx, y: by, vx: Math.cos(a) * v, vy: Math.sin(a) * v, hue: hues[k % hues.length], trail: [], fuse: rand(.55, .8), burst: Math.random() < .4 });
       }
-    });
-
-    // Fogos
-    if (t - lastBurst > 1.4) {
-      lastBurst = t;
-      const bx = W * (.15 + Math.random() * .7), by = H * (.12 + Math.random() * .25), h = hue[Math.floor(Math.random() * 3)];
-      for (let k = 0; k < 34; k++) { const a = k / 34 * Math.PI * 2, v = 40 + Math.random() * 50; sparks.push({ x: bx, y: by, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, h }); }
+    } else {
+      // Tiros verticais espalhados pelo palco
+      const n = 3 + Math.floor(Math.random() * 4);
+      for (let k = 0; k < n; k++) {
+        shells.push({ x: W * rand(.1, .9), y: H * rand(.72, .86), vx: rand(-25, 25), vy: -H * rand(1.1, 1.45), hue: hues[k % hues.length], trail: [], fuse: rand(.5, .75), burst: true });
+      }
     }
-    sparks = sparks.filter(p => p.life > 0);
-    sparks.forEach(p => {
-      p.x += p.vx / 60; p.y += p.vy / 60; p.vy += 30 / 60; p.life -= 1 / 90;
-      ctx.fillStyle = hsl(p.h, 100, 72, p.life); ctx.fillRect(p.x, p.y, 2.5, 2.5);
+    nextVolley = now + rand(1500, 3000);
+  }
+
+  function explode(sh) {
+    const n = 45 + Math.floor(Math.random() * 35);
+    for (let k = 0; k < n; k++) {
+      const a = Math.random() * Math.PI * 2, v = rand(.06, .32) * H, life = rand(1.1, 2.2);
+      sparks.push({ x: sh.x, y: sh.y, vx: Math.cos(a) * v + sh.vx * .15, vy: Math.sin(a) * v + sh.vy * .15, life, max: life, hue: sh.hue, g: .22 });
+    }
+  }
+
+  function step(now) {
+    if (!W) resize();
+    const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+    const g = H * .9;
+    if (now > nextVolley) volley(now);
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+
+    shells.forEach(sh => {
+      if (!sh.dead) {
+        sh.vy += g * dt; sh.x += sh.vx * dt; sh.y += sh.vy * dt; sh.fuse -= dt;
+        sh.trail.push([sh.x, sh.y]); if (sh.trail.length > 22) sh.trail.shift();
+        // faíscas soltas pelo caminho
+        sparks.push({ x: sh.x, y: sh.y, vx: rand(-15, 15), vy: rand(-10, 25), life: rand(.3, .7), max: .7, hue: sh.hue, g: .4 });
+        if (sh.fuse <= 0) { sh.dead = true; if (sh.burst) explode(sh); }
+      } else {
+        sh.trail.shift(); sh.trail.shift();
+      }
+      const tr = sh.trail;
+      for (let i = 1; i < tr.length; i++) {
+        const a = i / tr.length;
+        ctx.strokeStyle = `hsla(${sh.hue},100%,${78 + a * 14}%,${a * .85})`;
+        ctx.lineWidth = .8 + a * 2;
+        ctx.beginPath(); ctx.moveTo(tr[i - 1][0], tr[i - 1][1]); ctx.lineTo(tr[i][0], tr[i][1]); ctx.stroke();
+      }
+      if (!sh.dead) { ctx.fillStyle = "rgba(255,250,235,.95)"; ctx.beginPath(); ctx.arc(sh.x, sh.y, 2.2, 0, Math.PI * 2); ctx.fill(); }
     });
+    shells = shells.filter(sh => !sh.dead || sh.trail.length > 1);
+
+    if (sparks.length > 1600) sparks.splice(0, sparks.length - 1600);
+    sparks.forEach(p => {
+      p.vx *= .985; p.vy = p.vy * .985 + g * p.g * dt;
+      p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt;
+      const a = Math.max(0, p.life / p.max) * (.55 + Math.random() * .45);
+      ctx.fillStyle = `hsla(${p.hue},100%,${72 + Math.random() * 18}%,${a})`;
+      ctx.fillRect(p.x, p.y, 1.8, 1.8);
+    });
+    sparks = sparks.filter(p => p.life > 0);
     ctx.globalCompositeOperation = "source-over";
 
-    // Plateia
-    ctx.fillStyle = "#040308"; ctx.strokeStyle = "#040308"; ctx.lineWidth = 3; ctx.lineCap = "round";
-    crowd.forEach(c => {
-      const top = H - c.h, bob = Math.sin((t * BPM / 60) * Math.PI * 2 + c.ph) * 3;
-      ctx.beginPath(); ctx.arc(c.x, top + bob, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillRect(c.x - 6, top + 4 + bob, 12, c.h);
-      if (c.hands) { ctx.beginPath(); ctx.moveTo(c.x - 5, top + 8 + bob); ctx.lineTo(c.x - 9, top - 12 + bob * 2); ctx.moveTo(c.x + 5, top + 8 + bob); ctx.lineTo(c.x + 9, top - 12 - bob * 2); ctx.stroke(); }
-    });
+    if (visible) requestAnimationFrame(step); else last = 0;
   }
 
-  function frame(now) {
-    if (!W) resize();
-    const t = (now - t0) / 1000, n = stages.length;
-    const idx = Math.floor(t / SCENE) % n, local = t % SCENE;
-    if (idx !== lastIdx) { lastIdx = idx; caption.textContent = `${stages[idx].name} · ${stages[idx].note}`; }
-    drawScene(stages[idx], t);
-    if (n > 1) {
-      const fade = Math.min(1, local / .8, (SCENE - local) / .8);
-      if (fade < 1) { ctx.fillStyle = `rgba(0,0,0,${1 - fade})`; ctx.fillRect(0, 0, W, H); }
-    }
-    if (!reduce && visible) requestAnimationFrame(frame);
+  window.addEventListener("resize", resize);
+  const resume = () => { if (!visible) { visible = true; requestAnimationFrame(step); } };
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => { if (e.isIntersecting && !document.hidden) resume(); else visible = false; }).observe(cv);
   }
-
-  window.addEventListener("resize", () => { resize(); if (reduce) frame(t0 + 2000); });
-  if ("IntersectionObserver" in window && !reduce) {
-    new IntersectionObserver(([e]) => { const was = visible; visible = e.isIntersecting && !document.hidden; if (visible && !was) requestAnimationFrame(frame); }).observe(cv);
-  }
-  document.addEventListener("visibilitychange", () => { const was = visible; visible = !document.hidden; if (visible && !was && !reduce) requestAnimationFrame(frame); });
-  resize();
-  if (reduce) { frame(t0 + 2000); caption.textContent = stages.map(s => s.name).join(" · "); }
-  else requestAnimationFrame(frame);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) visible = false; else resume(); });
+  requestAnimationFrame(step);
 })();
 
 // História

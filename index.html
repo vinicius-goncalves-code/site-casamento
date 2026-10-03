@@ -423,12 +423,15 @@ const CONFIG = {
   story: {
     paragraphs: [
       "A Ani é de Cuiabá, o Vinícius é de São Paulo, e foi preciso uma pista de música eletrônica para esses dois caminhos se cruzarem. A gente se conheceu no Tomorrowland Brasil, em 2023, e desde então a trilha sonora nunca mais parou.",
-      "Vieram anos de namoro a distância, muitas idas e vindas entre SP e Cuiabá e a certeza de que valia cada quilômetro. Em 2025, no mesmo festival onde tudo começou, veio o pedido. Em 2026, a Ani fez as malas e se mudou para São Paulo.",
+      "Depois daquele primeiro encontro, a vida nos afastou por um tempo. Mas em 2024 o Tomorrowland nos colocou de novo no mesmo caminho, e dessa vez a gente não deixou escapar.",
+      "Vieram o namoro a distância, muitas idas e vindas entre SP e Cuiabá e a certeza de que valia cada quilômetro. Em 2025, no mesmo festival que nos uniu duas vezes, veio o pedido. Em 2026, a Ani fez as malas e se mudou para São Paulo.",
       "Agora voltamos a Cuiabá, onde a história dela começou, para celebrar a nossa com quem a gente ama."
     ],
     timeline: [
       { title: "O primeiro encontro", when: "2023 · Tomorrowland Brasil" },
-      { title: "Namoro a distância", when: "2023 a 2026 · SP ↔ Cuiabá" },
+      { title: "Um tempo separados", when: "2023 a 2024" },
+      { title: "O reencontro", when: "2024 · Tomorrowland" },
+      { title: "Namoro a distância", when: "2024 a 2026 · SP ↔ Cuiabá" },
       { title: "O pedido", when: "2025 · Tomorrowland" },
       { title: "Finalmente na mesma cidade", when: "2026 · São Paulo" },
       { title: "O sim!", when: "01.05.2027 · Cuiabá" }
@@ -438,13 +441,14 @@ const CONFIG = {
   // Volta ao mundo: 1 foto por país. Os slots até `tripGoal` aparecem como "carregando".
   tripGoal: 10,
   tripIntro: "Viajar é o nosso programa favorito, principalmente juntos. Já são 6 países, e combinamos que, quando chegarmos a 10, é hora de aumentar a família.",
+  // focus = ponto da foto que fica centralizado no card
   trips: [
-    { country: "França", year: "Paris", photo: "fotos/header-3.webp" },
-    { country: "Canadá", year: "", photo: "fotos/ski-pb.webp" },   // TODO: ano
-    { country: "País 3", year: "Ano" },
-    { country: "País 4", year: "Ano" },
-    { country: "País 5", year: "Ano" },
-    { country: "País 6", year: "Ano" }
+    { country: "Chile", city: "Valle Nevado", photo: "fotos/viagem-chile.jpg", focus: "50% 50%" },
+    { country: "Canadá", city: "Whistler", photo: "fotos/ski-pb.webp", focus: "50% 50%" },
+    { country: "Bélgica", city: "Bruxelas", photo: "fotos/viagem-belgica.jpg", focus: "50% 70%" },
+    { country: "Holanda", city: "Amsterdã", photo: "fotos/viagem-holanda.webp", focus: "50% 35%" },
+    { country: "França", city: "Paris", photo: "fotos/viagem-franca.jpg", focus: "50% 30%" },
+    { country: "Luxemburgo", city: "Luxemburgo", photo: "fotos/viagem-luxemburgo.webp", focus: "50% 75%" }
   ],
 
   events: [
@@ -537,13 +541,13 @@ $("#timeline").innerHTML = CONFIG.story.timeline.map(t => `<li><strong>${esc(t.t
 
 // Volta ao mundo + lightbox
 const trips = CONFIG.trips.slice(0, CONFIG.tripGoal);
-const photos = trips.filter(t => t.photo).map(t => ({ src: t.photo, alt: `${t.country} · ${t.year}` }));
+const photos = trips.filter(t => t.photo).map(t => ({ src: t.photo, alt: `${t.country} · ${t.city}` }));
 $("#worldIntro").textContent = CONFIG.tripIntro;
 $("#worldCount").textContent = `${trips.length} de ${CONFIG.tripGoal} países`;
 requestAnimationFrame(() => setTimeout(() => $("#worldBar").style.width = `${trips.length / CONFIG.tripGoal * 100}%`, 300));
-const cap = t => `<div class="cap"><strong>${esc(t.country)}</strong><span>${esc(t.year)}</span></div>`;
+const cap = t => `<div class="cap"><strong>${esc(t.country)}</strong><span>${esc(t.city || "")}</span></div>`;
 $("#world").innerHTML = trips.map(t => t.photo
-    ? `<button class="trip" data-i="${photos.findIndex(p => p.src === t.photo)}" aria-label="Ampliar foto: ${esc(t.country)}"><img src="${t.photo}" alt="${esc(t.country)}" loading="lazy">${cap(t)}</button>`
+    ? `<button class="trip" data-i="${photos.findIndex(p => p.src === t.photo)}" aria-label="Ampliar foto: ${esc(t.country)}"><img src="${t.photo}" alt="${esc(t.country)}" loading="lazy" style="object-position:${t.focus || "50% 50%"}">${cap(t)}</button>`
     : `<div class="trip no-photo"><span class="hint">Foto em breve</span>${cap(t)}</div>`).join("")
   + Array.from({ length: CONFIG.tripGoal - trips.length }, (_, k) => {
     const n = trips.length + k + 1, last = n === CONFIG.tripGoal;

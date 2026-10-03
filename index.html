@@ -7,17 +7,18 @@
 <title>Nosso Casamento · 01.05.2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #FBF8F3;
-    --bg-alt: #F3EDE3;
-    --ink: #2E2A26;
-    --muted: #7A7067;
-    --accent: #8A9A7B;       /* verde-sálvia */
-    --accent-dark: #6C7C5E;
-    --gold: #B89B6A;
-    --line: #E2D9CB;
+    /* Paleta copo-de-leite: brancos + verdes de folha */
+    --bg: #FCFCFA;
+    --bg-alt: #F1F4EE;
+    --ink: #1F2A22;
+    --muted: #66705F;
+    --accent: #3E5C46;       /* verde-folha */
+    --accent-dark: #2C4433;
+    --leaf: #7F9C7C;         /* verde suave (detalhes) */
+    --line: #DFE5DA;
     --white: #FFFFFF;
     --radius: 14px;
     --serif: "Cormorant Garamond", Georgia, serif;
@@ -48,23 +49,29 @@
     .nav-links a { display: block; padding: 14px 16px; border-top: 1px solid var(--line); }
   }
 
-  /* Hero */
-  .hero { position: relative; min-height: 92vh; display: grid; place-items: center; text-align: center; color: var(--white); overflow: hidden; }
-  .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.04); }
-  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,26,22,.35) 0%, rgba(30,26,22,.55) 100%); }
-  .hero-content { position: relative; z-index: 1; padding: 48px 16px; }
-  .hero .eyebrow { font-size: 12px; letter-spacing: .32em; text-transform: uppercase; opacity: .9; }
-  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 10vw, 108px); line-height: 1.05; margin: 18px 0 10px; }
-  .hero h1 .amp { font-style: italic; color: #E9D9BC; }
-  .hero .date { font-family: var(--serif); font-size: clamp(20px, 3vw, 28px); letter-spacing: .12em; }
-  .countdown { display: flex; justify-content: center; gap: clamp(14px, 4vw, 36px); margin: 34px 0 36px; }
+  /* Cabeçalho: nomes + 3 fotos + data */
+  .hero { text-align: center; padding: 64px 16px 56px; }
+  .names { font-family: "Cinzel", var(--serif); font-weight: 400; font-size: clamp(26px, 5vw, 54px); letter-spacing: .1em; text-transform: uppercase; line-height: 1.2; }
+  .names .plus { color: var(--leaf); margin: 0 .3em; }
+  .hero-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1060px; margin: 44px auto 40px; }
+  .hero-photos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--bg-alt); }
+  .hero-date { font-weight: 600; font-size: clamp(24px, 3.4vw, 36px); letter-spacing: .14em; color: #444; }
+  .hero-city { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  @media (max-width: 600px) { .hero { padding-top: 44px; } .hero-photos { gap: 6px; margin: 28px auto; } }
+
+  /* Faixa da contagem regressiva */
+  .countdown-band { background: var(--accent); color: var(--white); text-align: center; padding: 52px 16px; }
+  .countdown-band .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; opacity: .8; }
+  .countdown { display: flex; justify-content: center; gap: clamp(14px, 4vw, 36px); margin: 22px 0 32px; }
   .countdown div { min-width: 64px; }
   .countdown strong { display: block; font-family: var(--serif); font-size: clamp(32px, 6vw, 52px); font-weight: 400; line-height: 1; }
   .countdown span { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: .85; }
   .btn { display: inline-block; border: 1px solid currentColor; background: transparent; color: inherit; padding: 13px 26px; border-radius: 999px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; transition: all .2s; }
   .btn-solid { background: var(--accent); border-color: var(--accent); color: var(--white); }
   .btn-solid:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
-  .hero .btn:not(.btn-solid):hover { background: rgba(255,255,255,.15); }
+  .btn-light { background: var(--white); border-color: var(--white); color: var(--accent-dark); }
+  .btn-light:hover { background: var(--bg-alt); }
+  .countdown-band .btn:not(.btn-light):hover { background: rgba(255,255,255,.15); }
   .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
   /* Seções */
@@ -73,27 +80,45 @@
   .wrap { max-width: 1120px; margin: 0 auto; }
   .narrow { max-width: 760px; margin: 0 auto; }
   .section-head { text-align: center; margin-bottom: 52px; }
-  .section-head .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .section-head .kicker { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--leaf); font-weight: 500; }
   .section-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5vw, 52px); line-height: 1.15; margin-top: 8px; }
   .section-head p { color: var(--muted); max-width: 620px; margin: 14px auto 0; }
-  .divider { width: 56px; height: 1px; background: var(--gold); margin: 22px auto 0; }
+  .divider { width: 56px; height: 1px; background: var(--leaf); margin: 22px auto 0; }
 
   /* História */
-  .story { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .story img { border-radius: var(--radius); aspect-ratio: 4/5; object-fit: cover; width: 100%; }
-  .story-text p { margin-bottom: 16px; }
-  .timeline { margin-top: 28px; border-left: 1px solid var(--line); padding-left: 22px; }
+  .story { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: start; max-width: 980px; margin: 0 auto; }
+  .story-text p { margin-bottom: 16px; font-size: 17px; }
+  .story-text p:first-child::first-letter { font-family: "Cinzel", var(--serif); font-size: 3.2em; float: left; line-height: .9; margin: 6px 10px 0 0; color: var(--accent); }
+  .timeline { border-left: 1px solid var(--line); padding-left: 22px; }
   .timeline li { list-style: none; position: relative; margin-bottom: 18px; }
-  .timeline li::before { content: ""; position: absolute; left: -27px; top: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); }
+  .timeline li::before { content: ""; position: absolute; left: -27px; top: 9px; width: 9px; height: 9px; border-radius: 50%; background: var(--leaf); }
   .timeline strong { font-family: var(--serif); font-size: 20px; font-weight: 500; display: block; line-height: 1.3; }
   .timeline span { color: var(--muted); font-size: 14px; }
   @media (max-width: 860px) { .story { grid-template-columns: 1fr; gap: 32px; } }
 
-  /* Galeria */
-  .gallery { columns: 3 260px; column-gap: 14px; }
-  .gallery button { display: block; width: 100%; border: 0; padding: 0; margin-bottom: 14px; border-radius: 10px; overflow: hidden; background: var(--line); break-inside: avoid; }
-  .gallery img { width: 100%; transition: transform .5s; }
-  .gallery button:hover img { transform: scale(1.04); }
+  /* Volta ao mundo: 1 foto por país, meta de 10 */
+  .world-progress { max-width: 420px; margin: -16px auto 44px; text-align: center; }
+  .world-progress strong { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+  .bar { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 10px; }
+  .bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width 1.2s ease; }
+  .world { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .trip { position: relative; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; border: 0; padding: 0; background: var(--line); color: var(--white); text-align: left; }
+  .trip img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .trip:hover img { transform: scale(1.04); }
+  .trip .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 14px 14px; background: linear-gradient(transparent, rgba(15,22,17,.72)); }
+  .trip .cap strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.1; }
+  .trip .cap span { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; opacity: .85; }
+  .trip.no-photo { background: linear-gradient(160deg, #DCE6D6, #B7C9B1); cursor: default; }
+  .trip.no-photo .hint { position: absolute; top: 14px; left: 14px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dark); }
+  .trip.loading { background: var(--white); border: 1.5px dashed var(--leaf); color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 14px; cursor: default; }
+  .trip.loading strong { font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--ink); margin-top: 14px; }
+  .trip.loading span { font-size: 12px; }
+  .spinner { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin 1.3s linear infinite; }
+  .trip.loading.goal { border-style: solid; border-color: var(--accent); background: var(--bg-alt); }
+  .trip.loading.goal .emoji { font-size: 30px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 960px) { .world { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .world { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
   .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(20,17,14,.92); display: none; place-items: center; padding: 16px; }
   .lightbox.open { display: grid; }
   .lightbox img { max-height: 86vh; max-width: 92vw; border-radius: 8px; }
@@ -104,10 +129,11 @@
   .lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
 
   /* Evento */
-  .events { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .events { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 680px; margin: 0 auto; }
+  .event-card .highlight { display: inline-block; font-size: 13px; color: var(--accent-dark); background: var(--bg-alt); border-radius: 10px; padding: 10px 16px; margin: -6px 0 22px; }
   .card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 32px; }
   .event-card { text-align: center; }
-  .event-card .icon { font-size: 30px; color: var(--gold); }
+  .event-card .icon { font-size: 30px; color: var(--leaf); }
   .event-card h3 { font-family: var(--serif); font-size: 32px; font-weight: 400; margin: 6px 0 2px; }
   .event-card .time { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-dark); font-weight: 500; }
   .event-card .place { font-family: var(--serif); font-size: 22px; margin-top: 18px; }
@@ -126,7 +152,7 @@
   /* Hospedagem */
   .stays { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
   .stay h4 { font-family: var(--serif); font-size: 24px; font-weight: 500; }
-  .stay .meta { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin: 2px 0 10px; }
+  .stay .meta { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--leaf); margin: 2px 0 10px; }
   .stay p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
   .tag { display: inline-block; font-size: 11px; background: var(--bg-alt); color: var(--accent-dark); border-radius: 999px; padding: 3px 10px; margin-bottom: 14px; font-weight: 500; }
 
@@ -139,7 +165,7 @@
   .gift:hover { box-shadow: 0 12px 30px rgba(46,42,38,.08); transform: translateY(-2px); }
   .gift img { aspect-ratio: 4/3; object-fit: cover; width: 100%; background: var(--line); }
   .gift-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
-  .gift-cat { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .gift-cat { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--leaf); font-weight: 500; }
   .gift h4 { font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.25; margin: 4px 0 12px; flex: 1; }
   .gift-price { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
   .gift-inst { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
@@ -181,7 +207,7 @@
   details { border-bottom: 1px solid var(--line); padding: 18px 0; }
   summary { font-family: var(--serif); font-size: 22px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font-family: var(--sans); font-weight: 300; font-size: 22px; color: var(--gold); transition: transform .2s; }
+  summary::after { content: "+"; font-family: var(--sans); font-weight: 300; font-size: 22px; color: var(--leaf); transition: transform .2s; }
   details[open] summary::after { transform: rotate(45deg); }
   details p { color: var(--muted); margin-top: 10px; }
 
@@ -191,12 +217,12 @@
 
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } .spinner { animation: none; } }
 </style>
 </head>
 <body>
 
-<div class="mvp-bar">Versão de referência (MVP): textos, fotos e valores são provisórios. Pagamentos e confirmações são simulados.</div>
+<div class="mvp-bar">Versão de referência (MVP): pagamentos e confirmações de presença são simulados.</div>
 
 <nav>
   <div class="nav-inner">
@@ -214,36 +240,38 @@
 </nav>
 
 <header class="hero" id="inicio">
-  <div class="hero-bg" id="heroBg"></div>
-  <div class="hero-content">
-    <div class="eyebrow">Vamos nos casar</div>
-    <h1 id="heroNames"></h1>
-    <div class="date" id="heroDate"></div>
-    <div class="countdown" id="countdown" aria-live="polite"></div>
-    <div class="hero-ctas">
-      <a href="#rsvp" class="btn btn-solid">Confirmar presença</a>
-      <a href="#presentes" class="btn">Lista de presentes</a>
-    </div>
-  </div>
+  <h1 class="names" id="heroNames"></h1>
+  <div class="hero-photos" id="heroPhotos"></div>
+  <div class="hero-date" id="heroDate"></div>
+  <div class="hero-city" id="heroCity"></div>
 </header>
+
+<div class="countdown-band">
+  <div class="kicker">Faltam</div>
+  <div class="countdown" id="countdown" aria-live="off"></div>
+  <div class="hero-ctas">
+    <a href="#rsvp" class="btn btn-light">Confirmar presença</a>
+    <a href="#presentes" class="btn">Lista de presentes</a>
+  </div>
+</div>
 
 <section id="historia">
   <div class="wrap">
-    <div class="section-head reveal"><div class="kicker">Nossa história</div><h2>Como tudo começou</h2><div class="divider"></div></div>
+    <div class="section-head reveal"><div class="kicker">Nossa história</div><h2>Do Tomorrowland ao altar</h2><div class="divider"></div></div>
     <div class="story reveal">
-      <img id="storyImg" alt="Foto do casal">
       <div class="story-text">
         <div id="storyText"></div>
-        <ul class="timeline" id="timeline"></ul>
       </div>
+      <ul class="timeline" id="timeline"></ul>
     </div>
   </div>
 </section>
 
 <section id="fotos" class="alt">
   <div class="wrap">
-    <div class="section-head reveal"><div class="kicker">Pré-wedding</div><h2>Nossos momentos</h2><div class="divider"></div></div>
-    <div class="gallery reveal" id="gallery"></div>
+    <div class="section-head reveal"><div class="kicker">Fotos</div><h2>Nossa volta ao mundo</h2><p id="worldIntro"></p><div class="divider"></div></div>
+    <div class="world-progress reveal"><strong id="worldCount"></strong><div class="bar"><i id="worldBar" style="width:0"></i></div></div>
+    <div class="world reveal" id="world"></div>
   </div>
 </section>
 
@@ -257,7 +285,7 @@
 
 <section id="hospedagem" class="alt">
   <div class="wrap">
-    <div class="section-head reveal"><div class="kicker">Para quem vem de longe</div><h2>Hospedagem e dicas</h2><p>Separamos algumas opções próximas ao local da festa. Reserve com antecedência: 1º de maio é feriado e a procura costuma ser alta.</p><div class="divider"></div></div>
+    <div class="section-head reveal"><div class="kicker">Para quem vem de longe</div><h2>Hospedagem e dicas</h2><p>Para quem vem de fora de Cuiabá, separamos algumas dicas. Reserve com antecedência: 1º de maio é feriado e a procura costuma ser alta.</p><div class="divider"></div></div>
     <div class="stays reveal" id="stays"></div>
   </div>
 </section>
@@ -365,47 +393,60 @@
    CONFIGURAÇÃO: edite aqui textos, datas, locais e presentes
    ============================================================ */
 const CONFIG = {
-  couple: { a: "Vinicius", b: "Nome" },          // TODO: nome do(a) parceiro(a)
-  monogram: "V & N",
-  dateISO: "2027-05-01T16:00:00-03:00",          // horário da cerimônia (provisório)
-  city: "Cidade · UF",
+  couple: { a: "Aniadny", b: "Vinícius" },       // nome dela sempre primeiro
+  monogram: "A + V",
+  dateISO: "2027-05-01T19:30:00-04:00",          // Cuiabá = UTC-4
+  city: "Cuiabá · MT",
   rsvpDeadline: "1º de abril de 2027",
-  heroImage: "https://picsum.photos/seed/casamento-hero/1800/1200",
+  heroPhotos: ["fotos/header-1.webp", "fotos/header-2.webp", "fotos/header-3.webp"],
 
   story: {
-    image: "https://picsum.photos/seed/casal-historia/800/1000",
     paragraphs: [
-      "Aqui entra a nossa história: como a gente se conheceu, o primeiro encontro, aquela viagem que mudou tudo. Um texto curto, leve e com a cara de vocês.",
-      "Depois de alguns anos juntos, chegou a hora de oficializar. E queremos muito que você esteja com a gente nesse dia."
+      "A Ani é de Cuiabá, o Vinícius é de São Paulo, e foi preciso uma pista de música eletrônica para esses dois caminhos se cruzarem. A gente se conheceu no Tomorrowland Brasil, em 2023, e desde então a trilha sonora nunca mais parou.",
+      "Vieram anos de namoro a distância, muitas idas e vindas entre SP e Cuiabá e a certeza de que valia cada quilômetro. Em 2025, no mesmo festival onde tudo começou, veio o pedido. Em 2026, a Ani fez as malas e se mudou para São Paulo.",
+      "Agora voltamos a Cuiabá, onde a história dela começou, para celebrar a nossa com quem a gente ama."
     ],
     timeline: [
-      { title: "O primeiro encontro", when: "Mês de 20XX · Local" },
-      { title: "A primeira viagem juntos", when: "Mês de 20XX · Destino" },
-      { title: "O pedido", when: "Mês de 20XX · Local" },
-      { title: "O sim!", when: "1º de maio de 2027" }
+      { title: "O primeiro encontro", when: "2023 · Tomorrowland Brasil" },
+      { title: "Namoro a distância", when: "2023 a 2026 · SP ↔ Cuiabá" },
+      { title: "O pedido", when: "2025 · Tomorrowland" },
+      { title: "Finalmente na mesma cidade", when: "2026 · São Paulo" },
+      { title: "O sim!", when: "01.05.2027 · Cuiabá" }
     ]
   },
 
-  gallery: Array.from({ length: 9 }, (_, i) => ({
-    src: `https://picsum.photos/seed/prewedding-${i + 1}/800/${[1000, 640, 900, 700, 1000, 600, 860, 1000, 680][i]}`,
-    alt: `Foto do pré-wedding ${i + 1}`
-  })),
+  // Volta ao mundo: 1 foto por país. Os slots até `tripGoal` aparecem como "carregando".
+  tripGoal: 10,
+  tripIntro: "Viajar é o nosso programa favorito, principalmente juntos. Já são 6 países, e combinamos que, quando chegarmos a 10, é hora de aumentar a família.",
+  trips: [
+    { country: "França", year: "Paris", photo: "fotos/header-3.webp" },
+    { country: "País 2", year: "Ano" },   // TODO: país, ano e foto
+    { country: "País 3", year: "Ano" },
+    { country: "País 4", year: "Ano" },
+    { country: "País 5", year: "Ano" },
+    { country: "País 6", year: "Ano" }
+  ],
 
   events: [
-    { icon: "♡", title: "Cerimônia", time: "16h00", place: "Nome da igreja ou espaço", address: "Rua Exemplo, 123 · Bairro · Cidade/UF", maps: "https://www.google.com/maps/search/?api=1&query=Rua+Exemplo+123" },
-    { icon: "✦", title: "Recepção", time: "18h00", place: "Nome do espaço de festa", address: "Estrada Exemplo, km 10 · Cidade/UF", maps: "https://www.google.com/maps/search/?api=1&query=Estrada+Exemplo+km+10" }
+    {
+      icon: "✿", title: "Jantar e casamento civil", time: "19h30",
+      highlight: "O casamento civil acontece logo no início, às 19h30 em ponto. Chegue com antecedência!",
+      place: "Mahalo Cozinha Criativa",
+      address: "Rua Presidente Castelo Branco, 359 · Quilombo · Cuiabá/MT · 78125-700",
+      maps: "https://www.google.com/maps/search/?api=1&query=Mahalo+Cozinha+Criativa+Rua+Presidente+Castelo+Branco+359+Cuiaba"
+    }
   ],
 
   info: [
-    { title: "Traje", text: "Esporte fino. Pedimos com carinho que as convidadas evitem branco e tons muito claros.", swatches: ["#8A9A7B", "#C9B79C", "#B89B6A", "#6C5A4E", "#2E3A4A"] },
-    { title: "Como chegar", text: "O espaço tem estacionamento com manobrista no local. Para quem vem de São Paulo, são cerca de 1h30 de carro." },
-    { title: "Crianças", text: "Os pequenos são muito bem-vindos! Teremos um espaço kids com monitoras durante a festa." }
+    { title: "Traje", text: "Social. Pedimos com carinho que as convidadas evitem branco. Abaixo, a paleta da nossa decoração, inspirada no copo-de-leite.", swatches: ["#FFFFFF", "#F1F4EE", "#C9D8C0", "#7F9C7C", "#3E5C46"] },
+    { title: "Pontualidade", text: "O casamento civil abre a noite, às 19h30 impreterivelmente. Programe-se para chegar uns 20 minutos antes." },
+    { title: "Clima", text: "Maio é o início da seca em Cuiabá: dias quentes, noites agradáveis. Vale levar algo leve para a noite e se hidratar bem." }
   ],
 
   stays: [
-    { name: "Hotel Exemplo", meta: "5 min do local · $$$", text: "Tarifa especial para convidados mediante o código CASAMENTOVN.", tag: "Tarifa negociada", link: "#" },
-    { name: "Pousada Exemplo", meta: "10 min do local · $$", text: "Opção charmosa e aconchegante, com café da manhã incluso.", link: "#" },
-    { name: "Airbnb na região", meta: "Opções variadas · $–$$$", text: "Boa alternativa para grupos e famílias que queiram dividir uma casa.", link: "https://www.airbnb.com.br" }
+    { name: "Hotel próximo", meta: "A definir", text: "Em breve indicaremos hotéis próximos ao Mahalo, com tarifa para convidados se conseguirmos negociar.", tag: "Em breve", link: "#" },
+    { name: "Chegando de avião", meta: "Aeroporto Marechal Rondon (CGB)", text: "O aeroporto fica em Várzea Grande, a cerca de 20–30 minutos do Mahalo de carro ou aplicativo.", link: "https://www.google.com/maps/search/?api=1&query=Aeroporto+Marechal+Rondon" },
+    { name: "Airbnb na região", meta: "Opções variadas · $–$$$", text: "Boa alternativa para grupos e famílias que queiram dividir uma casa perto do Quilombo.", link: "https://www.airbnb.com.br" }
   ],
 
   giftCategories: ["Lua de mel", "Casa nova", "Experiências"],
@@ -431,9 +472,10 @@ const CONFIG = {
 
   faq: [
     { q: "Até quando posso confirmar presença?", a: "Pedimos que confirme até 1º de abril de 2027, para fecharmos os números com o buffet." },
+    { q: "A que horas devo chegar?", a: "O casamento civil abre a noite às 19h30 impreterivelmente, então chegue com uns 20 minutos de antecedência. Depois, segue o jantar no próprio Mahalo." },
     { q: "Posso levar acompanhante?", a: "O convite é nominal. Se o seu convite incluir acompanhante, ele virá indicado no envelope ou na mensagem que você recebeu." },
     { q: "Como funciona a lista de presentes?", a: "Os itens são simbólicos: o valor é convertido em dinheiro para os noivos. Você pode pagar via Pix ou cartão de crédito em até 12x." },
-    { q: "Vai ter transporte até a festa?", a: "Estamos avaliando um transfer a partir dos hotéis parceiros. Atualizaremos esta página assim que estiver confirmado." }
+    { q: "Qual é o traje?", a: "Social. Pedimos apenas que as convidadas evitem branco." }
   ]
 };
 
@@ -444,15 +486,16 @@ const $ = (s, el = document) => el.querySelector(s);
 const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const eventDate = new Date(CONFIG.dateISO);
-const longDate = eventDate.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "America/Sao_Paulo" });
-const shortDate = eventDate.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "America/Sao_Paulo" }).replace(/\//g, ".");
+const longDate = eventDate.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "America/Cuiaba" });
+const shortDate = eventDate.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "America/Cuiaba" }).replace(/\//g, ".");
 
 // Cabeçalho
 $("#monogram").textContent = CONFIG.monogram;
 $("#footerMono").textContent = CONFIG.monogram;
-$("#heroNames").innerHTML = `${esc(CONFIG.couple.a)} <span class="amp">&amp;</span> ${esc(CONFIG.couple.b)}`;
-$("#heroDate").textContent = `${shortDate} · ${CONFIG.city}`;
-$("#heroBg").style.backgroundImage = `url("${CONFIG.heroImage}")`;
+$("#heroNames").innerHTML = `${esc(CONFIG.couple.a)}<span class="plus">+</span>${esc(CONFIG.couple.b)}`;
+$("#heroPhotos").innerHTML = CONFIG.heroPhotos.map((src, i) => `<img src="${src}" alt="${esc(CONFIG.couple.a)} e ${esc(CONFIG.couple.b)}, foto ${i + 1}">`).join("");
+$("#heroDate").textContent = shortDate;
+$("#heroCity").textContent = CONFIG.city;
 $("#footerDate").textContent = `${shortDate} · ${CONFIG.city}`;
 document.title = `${CONFIG.couple.a} & ${CONFIG.couple.b} · ${shortDate}`;
 
@@ -466,16 +509,29 @@ function tick() {
 tick(); setInterval(tick, 1000);
 
 // História
-$("#storyImg").src = CONFIG.story.image;
 $("#storyText").innerHTML = CONFIG.story.paragraphs.map(p => `<p>${esc(p)}</p>`).join("");
 $("#timeline").innerHTML = CONFIG.story.timeline.map(t => `<li><strong>${esc(t.title)}</strong><span>${esc(t.when)}</span></li>`).join("");
 
-// Galeria + lightbox
-$("#gallery").innerHTML = CONFIG.gallery.map((g, i) => `<button data-i="${i}" aria-label="Ampliar ${esc(g.alt)}"><img src="${g.src}" alt="${esc(g.alt)}" loading="lazy"></button>`).join("");
+// Volta ao mundo + lightbox
+const trips = CONFIG.trips.slice(0, CONFIG.tripGoal);
+const photos = trips.filter(t => t.photo).map(t => ({ src: t.photo, alt: `${t.country} · ${t.year}` }));
+$("#worldIntro").textContent = CONFIG.tripIntro;
+$("#worldCount").textContent = `${trips.length} de ${CONFIG.tripGoal} países`;
+requestAnimationFrame(() => setTimeout(() => $("#worldBar").style.width = `${trips.length / CONFIG.tripGoal * 100}%`, 300));
+const cap = t => `<div class="cap"><strong>${esc(t.country)}</strong><span>${esc(t.year)}</span></div>`;
+$("#world").innerHTML = trips.map(t => t.photo
+    ? `<button class="trip" data-i="${photos.findIndex(p => p.src === t.photo)}" aria-label="Ampliar foto: ${esc(t.country)}"><img src="${t.photo}" alt="${esc(t.country)}" loading="lazy">${cap(t)}</button>`
+    : `<div class="trip no-photo"><span class="hint">Foto em breve</span>${cap(t)}</div>`).join("")
+  + Array.from({ length: CONFIG.tripGoal - trips.length }, (_, k) => {
+    const n = trips.length + k + 1, last = n === CONFIG.tripGoal;
+    return last
+      ? `<div class="trip loading goal"><span class="emoji">👶</span><strong>Destino ${n}</strong><span>e depois…</span></div>`
+      : `<div class="trip loading"><div class="spinner"></div><strong>Destino ${n}</strong><span>carregando…</span></div>`;
+  }).join("");
 let lbIndex = 0;
 const lb = $("#lightbox");
-function showLb(i) { lbIndex = (i + CONFIG.gallery.length) % CONFIG.gallery.length; $("#lbImg").src = CONFIG.gallery[lbIndex].src; $("#lbImg").alt = CONFIG.gallery[lbIndex].alt; lb.classList.add("open"); }
-$("#gallery").addEventListener("click", e => { const b = e.target.closest("button"); if (b) showLb(+b.dataset.i); });
+function showLb(i) { lbIndex = (i + photos.length) % photos.length; $("#lbImg").src = photos[lbIndex].src; $("#lbImg").alt = photos[lbIndex].alt; lb.classList.add("open"); }
+$("#world").addEventListener("click", e => { const b = e.target.closest("button.trip"); if (b) showLb(+b.dataset.i); });
 $(".lb-close").onclick = () => lb.classList.remove("open");
 $(".lb-prev").onclick = () => showLb(lbIndex - 1);
 $(".lb-next").onclick = () => showLb(lbIndex + 1);
@@ -497,6 +553,7 @@ $("#events").innerHTML = CONFIG.events.map((ev, i) => `
     <div class="time">${esc(ev.time)}</div>
     <div class="place">${esc(ev.place)}</div>
     <address>${esc(ev.address)}</address>
+    ${ev.highlight ? `<div class="highlight">${esc(ev.highlight)}</div>` : ""}
     <div class="event-actions">
       <a class="btn btn-outline" href="${ev.maps}" target="_blank" rel="noopener">Ver no mapa</a>
       <button class="btn btn-outline" data-ics="${i}">Adicionar à agenda</button>
@@ -511,7 +568,7 @@ $("#events").addEventListener("click", e => {
   const b = e.target.closest("[data-ics]"); if (!b) return;
   const ev = CONFIG.events[+b.dataset.ics];
   const [hh, mm] = ev.time.replace("h", ":").split(":").map(Number);
-  const start = new Date(eventDate); start.setUTCHours(hh + 3, mm || 0, 0); // BRT = UTC-3
+  const start = new Date(eventDate); start.setUTCHours(hh + 4, mm || 0, 0); // Cuiabá = UTC-4
   const end = new Date(start.getTime() + 5 * 36e5);
   const fmt = d => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
   const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//casamento//PT-BR", "BEGIN:VEVENT",

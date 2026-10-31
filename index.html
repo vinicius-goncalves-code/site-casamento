@@ -7,7 +7,7 @@
 <title>Nosso Casamento · 01.05.2027</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&family=The+Nautigal:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     /* Paleta copo-de-leite: brancos + verdes de folha */
@@ -51,8 +51,9 @@
 
   /* Cabeçalho: nomes + 3 fotos + data */
   .hero { text-align: center; padding: 64px 16px 56px; }
-  .names { font-family: "Cinzel", var(--serif); font-weight: 400; font-size: clamp(26px, 5vw, 54px); letter-spacing: .1em; text-transform: uppercase; line-height: 1.2; }
-  .names .plus { color: var(--leaf); margin: 0 .3em; }
+  /* Nomes na fonte manuscrita do convite */
+  .names { font-family: "The Nautigal", cursive; font-weight: 400; font-size: clamp(54px, 10vw, 112px); line-height: 1.1; color: #3a3a3a; }
+  .names .amp { font-size: .7em; margin: 0 .25em; }
   .hero-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1060px; margin: 44px auto 40px; }
   .hero-photos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--bg-alt); }
   .hero-date { font-weight: 600; font-size: clamp(24px, 3.4vw, 36px); letter-spacing: .14em; color: #444; }
@@ -100,7 +101,12 @@
 
   /* História */
   .story { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: start; max-width: 980px; margin: 0 auto; }
-  .story-text p { margin-bottom: 16px; font-size: 17px; }
+  .story-text p { margin-bottom: 16px; font-size: 17px; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+  .story-text .more { display: none; }
+  .story-text.open .more { display: block; }
+  .story-text .dots { color: var(--leaf); letter-spacing: .1em; }
+  .story-text.open .dots { display: none; }
+  .story-toggle { background: none; border: 0; padding: 0; color: var(--accent); font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
   .story-text p:first-child::first-letter { font-family: "Cinzel", var(--serif); font-size: 3.2em; float: left; line-height: .9; margin: 6px 10px 0 0; color: var(--accent); }
   .timeline { border-left: 1px solid var(--line); padding-left: 22px; }
   .timeline li { list-style: none; position: relative; margin-bottom: 18px; }
@@ -109,6 +115,17 @@
   .timeline span { color: var(--muted); font-size: 14px; }
   @media (max-width: 860px) { .story { grid-template-columns: 1fr; gap: 32px; } }
 
+  /* Atalho em destaque para a lista de presentes (acima da volta ao mundo) */
+  .gift-cta { display: flex; flex-direction: column; align-items: center; gap: 14px; width: fit-content; margin: 0 auto 72px; text-decoration: none; text-align: center; }
+  .round-icon { position: relative; display: grid; place-items: center; width: 92px; height: 92px; border-radius: 50%; background: var(--accent); color: var(--white); box-shadow: 0 10px 28px rgba(44,68,51,.25); transition: transform .25s, background .25s; }
+  .round-icon::after { content: ""; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid var(--leaf); animation: ring 2.6s ease-out infinite; }
+  .round-icon svg { width: 40px; height: 40px; }
+  .round-icon .mono { font-family: var(--serif); font-size: 26px; font-weight: 500; letter-spacing: .02em; }
+  .gift-cta:hover .round-icon { transform: translateY(-3px); background: var(--accent-dark); }
+  .gift-cta strong { font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.1; }
+  .gift-cta small { display: block; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  @keyframes ring { 0% { transform: scale(.92); opacity: 1; } 100% { transform: scale(1.22); opacity: 0; } }
+
   /* Volta ao mundo: 1 foto por país, meta de 10 */
   .world-progress { max-width: 420px; margin: -16px auto 44px; text-align: center; }
   .world-progress strong { font-family: var(--serif); font-size: 26px; font-weight: 500; }
@@ -116,8 +133,7 @@
   .bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; transition: width 1.2s ease; }
   .world { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
   .trip { position: relative; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; border: 0; padding: 0; background: var(--line); color: var(--white); text-align: left; }
-  .trip img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
-  .trip:hover img { transform: scale(1.04); }
+  .trip img { width: 100%; height: 100%; object-fit: cover; }
   .trip .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 14px 14px; background: linear-gradient(transparent, rgba(15,22,17,.72)); }
   .trip .cap strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.1; }
   .trip .cap span { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; opacity: .85; }
@@ -132,21 +148,13 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   @media (max-width: 960px) { .world { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 560px) { .world { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(20,17,14,.92); display: none; place-items: center; padding: 16px; }
-  .lightbox.open { display: grid; }
-  .lightbox img { max-height: 86vh; max-width: 92vw; border-radius: 8px; }
-  .lb-btn { position: absolute; background: none; border: 0; color: #fff; font-size: 34px; padding: 12px; opacity: .8; }
-  .lb-btn:hover { opacity: 1; }
-  .lb-close { top: 10px; right: 14px; }
-  .lb-prev { left: 8px; top: 50%; transform: translateY(-50%); }
-  .lb-next { right: 8px; top: 50%; transform: translateY(-50%); }
 
   /* Evento */
   .events { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 680px; margin: 0 auto; }
   .event-card .highlight { display: inline-block; font-size: 13px; color: var(--accent-dark); background: var(--bg-alt); border-radius: 10px; padding: 10px 16px; margin: -6px 0 22px; }
   .card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 36px 32px; }
   .event-card { text-align: center; }
-  .event-card .icon { font-size: 30px; color: var(--leaf); }
+  .event-card .round-icon { margin: 4px auto 22px; }
   .event-card h3 { font-family: var(--serif); font-size: 32px; font-weight: 400; margin: 6px 0 2px; }
   .event-card .time { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-dark); font-weight: 500; }
   .event-card .place { font-family: var(--serif); font-size: 22px; margin-top: 18px; }
@@ -167,6 +175,26 @@
   .stay h4 { font-family: var(--serif); font-size: 24px; font-weight: 500; }
   .stay .meta { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--leaf); margin: 2px 0 10px; }
   .stay p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+  .stay-links { list-style: none; }
+  .stay-links li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .stay-links li:last-child { border-bottom: 0; }
+  .stay-links a { font-family: var(--serif); font-size: 19px; color: var(--accent-dark); text-decoration: none; }
+  .stay-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .stay-links span { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .stay-links .stay-group { padding: 14px 0 4px; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--leaf); }
+  .stay-links .stay-group:first-child { padding-top: 0; }
+  .promo { margin-bottom: 24px; text-align: center; border: 1px solid var(--accent); }
+  .promo h4 { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--accent-dark); }
+  .promo p { color: var(--muted); font-size: 15px; max-width: 620px; margin: 6px auto 0; }
+  .tips { margin-top: 24px; }
+  .tips h3 { font-family: var(--serif); font-size: 30px; font-weight: 400; }
+  .tips-intro { color: var(--muted); font-size: 14px; margin: 2px 0 22px; }
+  .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .tips h4 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--leaf); font-weight: 500; margin-bottom: 8px; }
+  .tips ul { list-style: none; }
+  .tips li { font-size: 15px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .tips li:last-child { border-bottom: 0; }
+  @media (max-width: 760px) { .tips-grid { grid-template-columns: 1fr; gap: 18px; } }
   .tag { display: inline-block; font-size: 11px; background: var(--bg-alt); color: var(--accent-dark); border-radius: 999px; padding: 3px 10px; margin-bottom: 14px; font-weight: 500; }
 
   /* Presentes */
@@ -176,7 +204,20 @@
   .gifts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
   .gift { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .25s, transform .25s; }
   .gift:hover { box-shadow: 0 12px 30px rgba(46,42,38,.08); transform: translateY(-2px); }
-  .gift img { aspect-ratio: 4/3; object-fit: cover; width: 100%; background: var(--line); }
+  /* Foto interativa: passa o mouse (ou toca) e aparece o "porquê" do presente */
+  .gift-photo { position: relative; display: block; width: 100%; aspect-ratio: 4/3; overflow: hidden; border: 0; padding: 0; background: var(--line); cursor: pointer; }
+  .gift-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .gift:hover .gift-photo img, .gift-photo.show img { transform: scale(1.07); }
+  .gift-note { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px; background: linear-gradient(rgba(20,32,24,0) 15%, rgba(20,32,24,.88)); color: var(--white); font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.3; text-align: left; opacity: 0; transform: translateY(10px); transition: opacity .35s, transform .35s; }
+  .gift:hover .gift-note, .gift-photo:focus-visible .gift-note, .gift-photo.show .gift-note { opacity: 1; transform: none; }
+  .gift-hint { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,.92); color: var(--accent-dark); font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; transition: opacity .3s; }
+  .gift:hover .gift-hint, .gift-photo.show .gift-hint { opacity: 0; }
+  .gift.pick { animation: pick 2s ease; }
+  @keyframes pick { 0%, 100% { box-shadow: 0 0 0 0 rgba(127,156,124,0); } 25%, 60% { box-shadow: 0 0 0 5px var(--leaf); } }
+  .gift-tools { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin: -14px 0 34px; }
+  .gift-tools label { margin: 0; }
+  .gift-tools select { width: auto; padding: 8px 14px; font-size: 13px; }
+  .photo-credit { text-align: center; font-size: 11px; color: var(--muted); margin-top: 28px; }
   .gift-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
   .gift-cat { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--leaf); font-weight: 500; }
   .gift h4 { font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.25; margin: 4px 0 12px; flex: 1; }
@@ -202,19 +243,14 @@
 
   /* Formulários */
   .form { display: grid; gap: 16px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 6px; }
   input, select, textarea { width: 100%; font: inherit; font-weight: 400; font-size: 15px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(138,154,123,.18); }
   textarea { resize: vertical; min-height: 90px; }
-  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
-  .radio-group label { text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 400; color: var(--ink); border: 1px solid var(--line); background: var(--white); border-radius: 10px; padding: 11px 16px; display: flex; gap: 8px; align-items: center; cursor: pointer; margin: 0; }
-  .radio-group input { width: auto; }
   .form .btn { justify-self: center; color: var(--white); margin-top: 6px; }
   .success { text-align: center; padding: 20px 0; display: none; }
   .success h3 { font-family: var(--serif); font-size: 34px; font-weight: 400; }
   .success p { color: var(--muted); }
-  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
 
   /* FAQ */
   details { border-bottom: 1px solid var(--line); padding: 18px 0; }
@@ -230,12 +266,12 @@
 
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } .spinner { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } .spinner, .round-icon::after { animation: none; } }
 </style>
 </head>
 <body>
 
-<div class="mvp-bar">Versão de referência (MVP): pagamentos e confirmações de presença são simulados.</div>
+<div class="mvp-bar">Versão de referência (MVP): pagamentos são simulados.</div>
 
 <nav>
   <div class="nav-inner">
@@ -243,11 +279,10 @@
     <button class="nav-toggle" aria-label="Abrir menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
     <ul class="nav-links" onclick="this.classList.remove('open')">
       <li><a href="#historia">Nossa história</a></li>
+      <li><a href="#presentes">Presentes</a></li>
       <li><a href="#fotos">Fotos</a></li>
       <li><a href="#evento">O grande dia</a></li>
       <li><a href="#hospedagem">Hospedagem</a></li>
-      <li><a href="#presentes">Presentes</a></li>
-      <li><a href="#rsvp">Confirmar presença</a></li>
     </ul>
   </div>
 </nav>
@@ -265,8 +300,7 @@
       <div class="kicker">Faltam</div>
       <div class="countdown" id="countdown" aria-live="off"></div>
       <div class="hero-ctas">
-        <a href="#rsvp" class="btn btn-light">Confirmar presença</a>
-        <a href="#presentes" class="btn">Lista de presentes</a>
+        <a href="#presentes" class="btn btn-light">Lista de presentes</a>
       </div>
     </div>
     <div class="band-photo-wrap"><img class="band-photo" id="bandPhoto" alt=""></div>
@@ -275,7 +309,7 @@
 
 <section id="historia">
   <div class="wrap">
-    <div class="section-head reveal"><div class="kicker">Nossa história</div><h2>Do Tomorrowland ao altar</h2><div class="divider"></div></div>
+    <div class="section-head reveal"><div class="kicker">Nossa história</div><h2>Do Tomorrowland ao altar ❤️</h2><div class="divider"></div></div>
     <div class="story reveal">
       <div class="story-text">
         <div id="storyText"></div>
@@ -287,6 +321,10 @@
 
 <section id="fotos" class="alt">
   <div class="wrap">
+    <a href="#presentes" class="gift-cta reveal" aria-label="Ir para a lista de presentes">
+      <span class="round-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8M12 8v13M12 8c-1.5-3-5-4-6-2s2 2 6 2zM12 8c1.5-3 5-4 6-2s-2 2-6 2z"/></svg></span>
+      <span><strong>Lista de presentes</strong><small>Pix ou cartão em até 12x</small></span>
+    </a>
     <div class="section-head reveal"><div class="kicker">Fotos</div><h2>Nossa volta ao mundo</h2><p id="worldIntro"></p><div class="divider"></div></div>
     <div class="world-progress reveal"><strong id="worldCount"></strong><div class="bar"><i id="worldBar" style="width:0"></i></div></div>
     <div class="world reveal" id="world"></div>
@@ -304,57 +342,28 @@
 <section id="hospedagem" class="alt">
   <div class="wrap">
     <div class="section-head reveal"><div class="kicker">Para quem vem de longe</div><h2>Hospedagem e dicas</h2><p>Para quem vem de fora de Cuiabá, separamos algumas dicas. Reserve com antecedência: 1º de maio é feriado e a procura costuma ser alta.</p><div class="divider"></div></div>
+    <div class="card promo reveal" id="promo"></div>
     <div class="stays reveal" id="stays"></div>
+    <div class="card tips reveal" id="tips"></div>
   </div>
 </section>
 
 <section id="presentes">
   <div class="wrap">
-    <div class="section-head reveal"><div class="kicker">Lista de presentes</div><h2>Presentes</h2><p>Sua presença é o nosso maior presente! Se quiser nos presentear, escolha um item simbólico abaixo: o valor vai direto para a construção da nossa vida a dois. Aceitamos Pix e cartão de crédito em até 12x.</p><div class="divider"></div></div>
+    <div class="section-head reveal"><div class="kicker">Lista de presentes</div><h2>Presentes</h2><p>Sua presença é o nosso maior presente! Se quiser nos presentear, montamos uma lista com itens de verdade e outros nem tanto. Todos viram um presente em dinheiro para a nossa vida a dois (e para os próximos países). Passe o mouse ou toque nas fotos. Aceitamos Pix e cartão de crédito em até 12x.</p><div class="divider"></div></div>
     <div class="gift-filters reveal" id="giftFilters"></div>
-    <div class="gifts" id="gifts"></div>
-  </div>
-</section>
-
-<section id="rsvp" class="alt">
-  <div class="narrow">
-    <div class="section-head reveal"><div class="kicker">RSVP</div><h2>Confirme sua presença</h2><p id="rsvpDeadline"></p><div class="divider"></div></div>
-    <div class="card reveal">
-      <form class="form" id="rsvpForm">
-        <div>
-          <label for="r-name">Nome completo</label>
-          <input id="r-name" name="name" required autocomplete="name">
-        </div>
-        <div class="form-row">
-          <div><label for="r-phone">WhatsApp</label><input id="r-phone" name="phone" type="tel" placeholder="(11) 99999-9999" autocomplete="tel"></div>
-          <div><label for="r-email">E-mail</label><input id="r-email" name="email" type="email" autocomplete="email"></div>
-        </div>
-        <div>
-          <label>Você vai?</label>
-          <div class="radio-group">
-            <label><input type="radio" name="attending" value="sim" required> Sim, estarei lá!</label>
-            <label><input type="radio" name="attending" value="nao"> Infelizmente não poderei ir</label>
-          </div>
-        </div>
-        <div class="form-row" id="guestRow">
-          <div><label for="r-adults">Adultos (incluindo você)</label><select id="r-adults" name="adults"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
-          <div><label for="r-kids">Crianças</label><select id="r-kids" name="kids"><option>0</option><option>1</option><option>2</option><option>3</option></select></div>
-        </div>
-        <div>
-          <label for="r-diet">Restrição alimentar</label>
-          <input id="r-diet" name="diet" placeholder="Ex.: vegetariano, sem glúten, alergia a frutos do mar">
-        </div>
-        <div>
-          <label for="r-msg">Deixe um recado para os noivos</label>
-          <textarea id="r-msg" name="message"></textarea>
-        </div>
-        <button class="btn btn-solid" type="submit">Enviar confirmação</button>
-      </form>
-      <div class="success" id="rsvpSuccess">
-        <h3>Obrigado!</h3>
-        <p id="rsvpSuccessText"></p>
-      </div>
+    <div class="gift-tools reveal">
+      <label for="giftSort">Ordenar</label>
+      <select id="giftSort">
+        <option value="">Em destaque</option>
+        <option value="asc">Menor preço</option>
+        <option value="desc">Maior preço</option>
+        <option value="az">A–Z</option>
+      </select>
+      <button class="btn btn-outline" id="giftRandom" type="button">Surpreenda-me</button>
     </div>
+    <div class="gifts" id="gifts"></div>
+    <p class="photo-credit">Fotos ilustrativas: Unsplash</p>
   </div>
 </section>
 
@@ -369,14 +378,6 @@
   <span class="monogram" id="footerMono"></span>
   <p id="footerDate"></p>
 </footer>
-
-<!-- Lightbox da galeria -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
-  <button class="lb-btn lb-close" aria-label="Fechar">×</button>
-  <button class="lb-btn lb-prev" aria-label="Anterior">‹</button>
-  <img id="lbImg" alt="">
-  <button class="lb-btn lb-next" aria-label="Próxima">›</button>
-</div>
 
 <!-- Modal de presente -->
 <div class="modal" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="gm-title">
@@ -415,21 +416,28 @@ const CONFIG = {
   monogram: "A + V",
   dateISO: "2027-05-01T19:30:00-04:00",          // Cuiabá = UTC-4
   city: "Cuiabá · MT",
-  rsvpDeadline: "1º de abril de 2027",
   heroPhotos: ["fotos/header-1.webp", "fotos/header-2.webp", "fotos/header-3.webp"],
   // Foto P&B à direita da contagem
   bandPhoto: "fotos/pedido-tml.webp",
 
   story: {
+    preview: 3,   // parágrafos visíveis antes do "Continuar lendo"
     paragraphs: [
-      "A Ani é de Cuiabá, o Vinícius é de São Paulo, e foi preciso uma pista de música eletrônica para esses dois caminhos se cruzarem. A gente se conheceu no Tomorrowland Brasil, em 2023, e desde então a trilha sonora nunca mais parou.",
-      "Depois daquele primeiro encontro, a vida nos afastou por um tempo. Mas em 2024 o Tomorrowland nos colocou de novo no mesmo caminho, e dessa vez a gente não deixou escapar.",
-      "Vieram o namoro a distância, muitas idas e vindas entre SP e Cuiabá e a certeza de que valia cada quilômetro. Em 2025, no mesmo festival que nos uniu duas vezes, veio o pedido. Em 2026, a Ani fez as malas e se mudou para São Paulo.",
-      "Agora voltamos a Cuiabá, onde a história dela começou, para celebrar a nossa com quem a gente ama."
+      "Ela, de Cuiabá. Ele, de São Paulo. Duas cidades, milhares de quilômetros de distância e uma paixão em comum: a música eletrônica.",
+      "Tudo começou em 2023, de uma forma que nenhum dos dois poderia imaginar. Estávamos no mesmo grupo do Tomorrowland Brasil no Telegram quando a Ani resolveu mandar uma mensagem para tirar uma dúvida sobre como chegar de São Paulo a Itu, onde aconteceria o festival.",
+      "O que era para ser apenas uma conversa sobre transporte acabou se transformando em horas de mensagens. Um assunto puxava o outro e, quando percebemos, já estávamos conversando sobre tudo. Seguimos assim, sem parar, até o grande dia em que finalmente nos encontramos pessoalmente, em meio à magia do Tomorrowland.",
+      "Naquele momento, ainda não sabíamos, mas aquela seria apenas a primeira página da nossa história.",
+      "A vida seguiu, nossos caminhos tomaram rumos diferentes e cada um continuou sua jornada. Até que, em 2024, o destino resolveu nos dar uma segunda chance. E, como se não pudesse existir outro cenário, foi novamente no Tomorrowland que nos reencontramos. Dessa vez, não deixamos a oportunidade passar.",
+      "Vieram as viagens entre São Paulo e Cuiabá, as despedidas nos aeroportos, a saudade e a contagem regressiva para o próximo abraço. Entre embarques e desembarques, descobrimos que a distância pode até separar duas pessoas, mas não impede que elas construam uma história juntas.",
+      "Em 2025, voltamos mais uma vez ao lugar onde tudo começou. Mas, dessa vez, havia uma surpresa: em meio à música, às luzes e à energia daquele lugar tão especial para nós, veio a pergunta que mudaria nossas vidas: \"Quer casar comigo?\"",
+      "E a resposta foi sim! ❤️",
+      "Em 2026, chegou a hora de trocar as despedidas pela alegria de estar juntos todos os dias. A Ani se mudou para São Paulo e começamos a construir nosso lar, dividindo não apenas os grandes momentos, mas também as pequenas alegrias da rotina.",
+      "Agora, em maio de 2027, chegou a nossa vez de reunir as pessoas que mais amamos em Cuiabá para celebrar o próximo capítulo dessa história.",
+      "Quem diria que uma simples mensagem perguntando como chegar a um festival acabaria nos levando até o altar?",
+      "O que começou com uma dúvida sobre o caminho se transformou na certeza de que queremos percorrer todos os próximos caminhos juntos. ❤️"
     ],
     timeline: [
       { title: "O primeiro encontro", when: "2023 · Tomorrowland Brasil" },
-      { title: "Um tempo separados", when: "2023 a 2024" },
       { title: "O reencontro", when: "2024 · Tomorrowland" },
       { title: "Namoro a distância", when: "2024 a 2026 · SP ↔ Cuiabá" },
       { title: "O pedido", when: "2025 · Tomorrowland" },
@@ -453,7 +461,7 @@ const CONFIG = {
 
   events: [
     {
-      icon: "✿", title: "Jantar e casamento civil", time: "19h30",
+      title: "Jantar e casamento civil", time: "19h30",
       highlight: "O casamento civil acontece logo no início, às 19h30 em ponto. Chegue com antecedência!",
       place: "Mahalo Cozinha Criativa",
       address: "Rua Presidente Castelo Branco, 359 · Quilombo · Cuiabá/MT · 78125-700",
@@ -462,41 +470,118 @@ const CONFIG = {
   ],
 
   info: [
-    { title: "Traje", text: "Social. Pedimos com carinho que as convidadas evitem branco. Abaixo, a paleta da nossa decoração, inspirada no copo-de-leite.", swatches: ["#FFFFFF", "#F1F4EE", "#C9D8C0", "#7F9C7C", "#3E5C46"] },
+    { title: "Traje", text: "Social. Pedimos com carinho que as convidadas evitem branco. Abaixo, a paleta da nossa decoração.", swatches: ["#FFFFFF", "#F1F4EE", "#C9D8C0", "#7F9C7C", "#3E5C46"] },
     { title: "Pontualidade", text: "O casamento civil abre a noite, às 19h30 impreterivelmente. Programe-se para chegar uns 20 minutos antes." },
     { title: "Clima", text: "Maio é o início da seca em Cuiabá: dias quentes, noites agradáveis. Vale levar algo leve para a noite e se hidratar bem." }
   ],
 
+  // links = lista de links dentro do card; btn = texto do botão (padrão "Ver opção")
   stays: [
-    { name: "Hotel próximo", meta: "A definir", text: "Em breve indicaremos hotéis próximos ao Mahalo, com tarifa para convidados se conseguirmos negociar.", tag: "Em breve", link: "#" },
-    { name: "Chegando de avião", meta: "Aeroporto Marechal Rondon (CGB)", text: "O aeroporto fica em Várzea Grande, a cerca de 20–30 minutos do Mahalo de carro ou aplicativo.", link: "https://www.google.com/maps/search/?api=1&query=Aeroporto+Marechal+Rondon" },
-    { name: "Salão de beleza", meta: "Cabelo e maquiagem", text: "Vamos indicar salões em Cuiabá para quem quiser se arrumar no dia. Agende com antecedência: é sábado e feriado, e a agenda lota rápido.", tag: "Em breve" },
-    { name: "Airbnb na região", meta: "Opções variadas · $–$$$", text: "Boa alternativa para grupos e famílias que queiram dividir uma casa perto do Quilombo.", link: "https://www.airbnb.com.br" }
+    { name: "Onde se hospedar", meta: "Nossas indicações", links: [
+      { label: "Intercity Cuiabá", url: "https://www.intercityhoteis.com.br/hotel-cuiaba/hotel-intercity-cuiaba" },
+      { label: "Deville Prime Cuiabá", url: "https://www.deville.com.br/hotel-deville-prime-cuiaba" },
+      { label: "Hotel Amazon Getúlio", url: "https://www.hoteisamazon.com.br/hoteisamazon/amazon-getulio" },
+      { label: "Starlis Home Versátil", note: "Apartamento onde ficamos várias vezes nas nossas pontes aéreas (Booking ou Airbnb)", url: "https://www.booking.com/hotel/br/starlis-home-versatil-morada-do-sol.pt-br.html" }
+    ] },
+    { name: "Chegando de avião", meta: "Aeroporto Marechal Rondon (CGB)", text: "O aeroporto fica em Várzea Grande, a cerca de 20–30 minutos do Mahalo. O Uber funciona super bem na cidade e, para quem quiser explorar as belezas de Cuiabá, a Movida e a Localiza ficam no próprio aeroporto.", link: "https://www.google.com/maps/search/?api=1&query=Aeroporto+Marechal+Rondon", btn: "Ver no mapa" },
+    { name: "Salão de beleza", meta: "Cabelo, maquiagem e barba", text: "Agende com antecedência: é sábado e feriado, e a agenda lota rápido.", links: [
+      { heading: "Feminino" },
+      { label: "Fast Escova Cuiabá", url: "https://maps.app.goo.gl/2RDh9Do1MPbztrPL7" },
+      { label: "Viuvet Salão de Beleza", url: "https://maps.app.goo.gl/VaMLwiZwspVxtRLQ8" },
+      { label: "Belviso Face & Hair", url: "https://maps.app.goo.gl/yfWJKRLMEjAzco6s8" },
+      { heading: "Masculino" },
+      { label: "Barbearia do Juarez", url: "https://maps.app.goo.gl/EE8kie4kVF1TneT47" },
+      { label: "Belviso Man", url: "https://maps.app.goo.gl/n9oG3J5KTj3ZMwZv7" }
+    ] }
   ],
 
-  giftCategories: ["Lua de mel", "Casa nova", "Experiências"],
+  // Faixa de destaque acima dos cards de hospedagem (troque o texto quando os códigos saírem)
+  promo: { tag: "Em breve", title: "Códigos de desconto para convidados", text: "Estamos fechando um código promocional para a hospedagem no Intercity Cuiabá e outro para passagens aéreas com a LATAM. Assim que saírem, os códigos aparecem aqui. Se puder, espere um pouquinho antes de reservar!" },
+
+  // Quadro "Aproveite Cuiabá" (passeios, restaurantes e comidas típicas)
+  tips: {
+    title: "Aproveite Cuiabá",
+    intro: "Se der para ficar uns dias a mais, estas são as nossas indicações.",
+    groups: [
+      { title: "Passeios", items: ["Chapada dos Guimarães", "Cachoeira Véu da Noiva, ou explorar as diversas cachoeiras da Chapada", "Nobres"] },
+      { title: "Onde comer", items: ["Morro dos Ventos, em Chapada dos Guimarães", "Okada, em Cuiabá", "Choppão, em Cuiabá"] },
+      { title: "Comidas típicas", items: ["Maria Isabel", "Farofa de banana", "Pacu assado", "Galinhada", "E muito mais!"] }
+    ]
+  },
+
+  giftCategories: ["Lua de mel e viagens", "Casa nova", "São Paulo x Flamengo", "Divertidos"],
+  // photo = foto ilustrativa (Unsplash, uso livre) ou local em fotos/; focus = ponto central da foto;
+  // note = frase que aparece ao passar o mouse/tocar na foto
   gifts: [
-    { name: "Jantar romântico na lua de mel", price: 350, cat: "Lua de mel" },
-    { name: "Passeio de barco ao pôr do sol", price: 600, cat: "Lua de mel" },
-    { name: "Upgrade do quarto do hotel", price: 1200, cat: "Lua de mel" },
-    { name: "Drinks na beira da praia", price: 180, cat: "Lua de mel" },
-    { name: "Mergulho com tartarugas", price: 480, cat: "Lua de mel" },
-    { name: "Cota das passagens aéreas", price: 2500, cat: "Lua de mel" },
-    { name: "Café da manhã no quarto", price: 220, cat: "Lua de mel" },
-    { name: "Jogo de panelas", price: 900, cat: "Casa nova" },
-    { name: "Máquina de café espresso", price: 1500, cat: "Casa nova" },
-    { name: "Jogo de cama king", price: 650, cat: "Casa nova" },
-    { name: "Taças de vinho de cristal", price: 400, cat: "Casa nova" },
-    { name: "Ajuda com o sofá novo", price: 3000, cat: "Casa nova" },
-    { name: "Plantas para a varanda", price: 150, cat: "Casa nova" },
-    { name: "Aula de culinária a dois", price: 450, cat: "Experiências" },
-    { name: "Dia de spa para os noivos", price: 800, cat: "Experiências" },
-    { name: "Ingressos para um show", price: 550, cat: "Experiências" }
+    { name: "Cota da passagem para o 7º país", price: 1487.63, cat: "Lua de mel e viagens", photo: "fotos/presente-snowtrip.jpg", focus: "50% 40%", note: "Gorro na cabeça e o próximo carimbo garantido. Faltam 4 para a meta dos 10." },
+    { name: "Passagem aérea para o Canadá (snowtrip)", price: 6013.57, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1599148874821-a3aa38f27ede", note: "Voltar ao Canadá para esquiar de novo. Dessa vez, casados." },
+    { name: "Brinde no avião - partiu lua de mel", price: 286.47, cat: "Lua de mel e viagens", photo: "fotos/presente-brinde-aviao.jpg", focus: "50% 40%", note: "Tim-tim a 10 mil metros de altura. Oficialmente em lua de mel." },
+    { name: "Upgrade para a classe executiva na lua de mel", price: 2894.37, cat: "Lua de mel e viagens", photo: "fotos/presente-executiva.jpg", focus: "50% 8%", note: "A noiva já experimentou. Agora não tem volta." },
+    { name: "Cruzeiro pelo Caribe", price: 6487.32, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1717541262982-731503ac4dc2", note: "Mar azul, drink na mão e um país novo por dia. A meta dos 10 agradece." },
+    { name: "Diária de hotel na lua de mel", price: 793.41, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1618773928121-c32242e63f39", note: "Lençol branco, ar-condicionado e ninguém batendo na porta." },
+    { name: "Jantar romântico na lua de mel", price: 348.72, cat: "Lua de mel e viagens", photo: "fotos/presente-jantar.webp", focus: "50% 32%", note: "Velas, vinho e zero conversa sobre o orçamento do casamento." },
+    { name: "Passeio de barco ao pôr do sol", price: 612.38, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1526761122248-c31c93f8b2b9", note: "Prometemos mandar a foto. Uma só. Talvez 47." },
+    { name: "Café da manhã na cama", price: 217.94, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1641924676578-ed2792eb24de", note: "Porque recém-casado acorda tarde e com fome." },
+    { name: "Day spa para os noivos se recuperarem da festa", price: 687.54, cat: "Lua de mel e viagens", photo: "fotos/presente-spa.jpg", focus: "50% 30%", note: "Roupão branco, chá quentinho e celular desligado." },
+    { name: "Carimbo novo no passaporte", price: 452.16, cat: "Lua de mel e viagens", photo: "https://images.unsplash.com/photo-1581553673739-c4906b5d0de8", note: "Cada carimbo é um país a menos até a meta (e até o bebê)." },
+    { name: "Cota do álbum de casamento", price: 2487.35, cat: "Divertidos", photo: "fotos/presente-paris.jpg", focus: "50% 68%", note: "O pré-wedding em Paris já rendeu fotos lindas. Agora falta o álbum para guardar tudo." },
+    { name: "Spa Day da Noivinha", price: 512.37, cat: "Divertidos", photo: "fotos/presente-hidromassagem.jpg", focus: "50% 55%", note: "Hidromassagem, espumante e zero preocupação com a lista de convidados." },
+    { name: "Chazinho anti-estresse da noiva", price: 187.43, cat: "Divertidos", photo: "fotos/presente-cafe-roupao.jpg", focus: "50% 30%", note: "Para tomar toda vez que alguém perguntar: \"e o buffet, já fechou?\"" },
+    { name: "Aluguel de esqui para a snowtrip", price: 647.29, cat: "Lua de mel e viagens", photo: "fotos/presente-esqui-ani.webp", focus: "50% 62%", note: "Porque passagem para o Canadá sem esqui não adianta nada." },
+    { name: "Geladeira de 3 portas", price: 5987.43, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1588854337115-1c67d9247e4d", note: "Espaço para a comida, as bebidas e os potinhos que a sogra manda." },
+    { name: "Batedeira KitchenAid", price: 2647.38, cat: "Casa nova", photo: "fotos/presente-kitchenaid.jpg", focus: "50% 50%", note: "Bolo caseiro aos domingos. Essa é a promessa." },
+    { name: "Torradeira Smeg", price: 1387.42, cat: "Casa nova", photo: "fotos/presente-smeg.webp", focus: "50% 55%", note: "Pão na chapa todo dia, com estilo italiano." },
+    { name: "Kit de utensílios de cozinha", price: 937.58, cat: "Casa nova", photo: "fotos/presente-utensilios.webp", focus: "50% 60%", note: "Para a cozinha ficar tão bonita quanto a gente promete que vai cozinhar." },
+    { name: "Airfryer", price: 687.29, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1745846664210-756817e1b19c", note: "Batata frita sem culpa (e sem louça)." },
+    { name: "Micro-ondas", price: 897.63, cat: "Casa nova", photo: "fotos/presente-microondas.webp", focus: "50% 48%", note: "Para esquentar a marmita da sogra." },
+    { name: "Filtro de água", price: 1143.86, cat: "Casa nova", photo: "fotos/presente-filtro.webp", focus: "50% 25%", note: "Hidratação obrigatória para o noivo paulista no calor de Cuiabá." },
+    { name: "Robô aspirador Xiaomi de última geração, para acabar com a discussão de quem varre a casa", price: 2946.81, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1762859731349-c9ff2808b672", note: "Ele varre e passa pano. A gente discute outra coisa." },
+    { name: "Cota do jogo de panelas Le Creuset", price: 4672.35, cat: "Casa nova", photo: "fotos/presente-le-creuset.webp", focus: "50% 50%", note: "Panela bonita assim dá vontade de cozinhar. Em tese." },
+    { name: "Saleiro e pimenteiro Le Creuset", price: 827.46, cat: "Casa nova", photo: "fotos/presente-sal-pimenta.jpg", focus: "50% 62%", note: "O sal e a pimenta da vida a dois. Um não vive sem o outro." },
+    { name: "Aparelho de jantar", price: 1298.47, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1631008788127-57317667a0d2", note: "Para o primeiro jantar de casados lá em casa. Vocês estão convidados." },
+    { name: "Jogo de talheres", price: 487.93, cat: "Casa nova", photo: "fotos/presente-talheres.webp", focus: "50% 55%", note: "Chega de garfo desparceirado." },
+    { name: "Faqueiro", price: 1243.67, cat: "Casa nova", photo: "fotos/presente-faqueiro.webp", focus: "50% 45%", note: "Para cortar o bolo de aniversário de casamento todo ano." },
+    { name: "Jogo de copos", price: 312.84, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1554140426-5e830b73a5e8", note: "Porque visita sempre quebra um." },
+    { name: "Máquina de café espresso", price: 1513.82, cat: "Casa nova", photo: "fotos/presente-cafeteira.webp", focus: "50% 50%", note: "Combustível oficial das manhãs de segunda-feira." },
+    { name: "Jogo de cama queen", price: 587.43, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1601276174812-63280a55656e", note: "Espaço suficiente para acabar com a guerra do cobertor." },
+    { name: "Cama queen", price: 2487.19, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1560185128-e173042f79dd", note: "O lugar oficial do vale-soneca." },
+    { name: "Jogo de toalhas", price: 398.52, cat: "Casa nova", photo: "fotos/presente-toalhas.webp", focus: "50% 45%", note: "Macias como as de hotel, mas sem hora de check-out." },
+    { name: "Quarto de hóspedes com sofá-cama para receber a sogra cuiabana", price: 2874.36, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1765464184843-105e144bd54b", note: "Ela vem de Cuiabá com saudade e mala cheia de pequi. Precisa de um cantinho." },
+    { name: "Taças de cristal", price: 487.26, cat: "Casa nova", photo: "fotos/presente-tacas.webp", focus: "50% 45%", note: "Uma para cada país que ainda vamos brindar." },
+    { name: "Flores para o apartamento novo", price: 153.48, cat: "Casa nova", photo: "fotos/presente-flores.webp", focus: "50% 55%", note: "Rosas que duram anos. Igual a gente." },
+    { name: "Sofá das maratonas de série", price: 2689.47, cat: "Casa nova", photo: "fotos/presente-sofa.webp", focus: "50% 52%", note: "Só mais um episódio. Prometemos." },
+    { name: "TV", price: 2947.83, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1567690187548-f07b1d7bf5a9", note: "Para as maratonas de série e os jogos do São Paulo e do Flamengo." },
+    { name: "Ar-condicionado", price: 2387.64, cat: "Casa nova", photo: "fotos/presente-ar.jpg", focus: "50% 60%", note: "Cuiabana em São Paulo também sente calor. E o noivo agradece." },
+    { name: "Mesa de jantar", price: 2743.58, cat: "Casa nova", photo: "fotos/presente-mesa-jantar.webp", focus: "50% 58%", note: "Lugar para receber a família toda (e a sogra)." },
+    { name: "Máquina de lavar e secar", price: 3387.46, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1626806819282-2c1dc01a5e0c", note: "Para lavar a camisa do São Paulo e a do Flamengo. Separadas, claro." },
+    { name: "Churrasqueira de varanda para o noivo", price: 1647.38, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1534797258760-1bd2cc95a5bd", note: "O noivo assume a grelha. A noiva assume o drink." },
+    { name: "Cota para a obra da casa nova", price: 1873.29, cat: "Casa nova", photo: "fotos/presente-obra.jpg", focus: "50% 62%", note: "O noivo já pegou na pá. Ajude com o resto." },
+    { name: "Ingresso para o noivo ver o São Paulo no Morumbis", price: 287.43, cat: "São Paulo x Flamengo", photo: "https://images.unsplash.com/photo-1599158150601-1417ebbaafdd", note: "Tricolor de coração. A noiva só vai junto se o jogo for contra o Flamengo." },
+    { name: "Ingresso para a noiva ver o Mengão no Maracanã", price: 312.87, cat: "São Paulo x Flamengo", photo: "https://images.unsplash.com/photo-1705240401408-784ff1a471ab", note: "Uma vez Flamengo, sempre Flamengo. O noivo vai de acompanhante (e calado)." },
+    { name: "Camisa do primeiro filho: São Paulo", price: 349.37, cat: "São Paulo x Flamengo", photo: "fotos/presente-saida-spfc.jpg", focus: "50% 50%", note: "A disputa está aberta: o time que juntar mais presentes veste o bebê dos 10 países." },
+    { name: "Camisa do primeiro filho: Flamengo", price: 349.38, cat: "São Paulo x Flamengo", photo: "fotos/presente-camisa-fla.webp", focus: "50% 45%", note: "A disputa está aberta: o time que juntar mais presentes veste o bebê dos 10 países." },
+    { name: "Seguro anti-zoeira para o noivo quando o Flamengo ganha título", price: 289.47, cat: "São Paulo x Flamengo", photo: "https://images.unsplash.com/photo-1705593973313-75de7bf95b56", note: "Cobertura ampla: grupo da família, almoço de domingo e final de Libertadores." },
+    { name: "Volta ao Tomorrowland Brasil, onde tudo começou", price: 1213.47, cat: "Divertidos", photo: "fotos/presente-tml-brasil.webp", focus: "50% 22%", note: "Foi lá que a gente se conheceu, se reencontrou e ficou noivo. Pra que mudar?" },
+    { name: "Ingressos para o Tomorrowland Winter", price: 3874.62, cat: "Divertidos", photo: "fotos/presente-tml-winter.webp", focus: "50% 25%", note: "Festival nos Alpes franceses: música eletrônica e neve na mesma viagem." },
+    { name: "Cota do carro novo", price: 5123.78, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1671719367451-7bf05ae9549c", note: "Aceitamos cotas a partir de um retrovisor." },
+    { name: "PS5 para a noite de jogos do casal", price: 3897.52, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1622297845775-5ff3fef71d13", note: "O noivo jura que vai dividir o controle." },
+    { name: "Kit sobrevivência do noivo paulista ao calor de Cuiabá", price: 264.17, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1601084195907-44baaa49dabd", note: "Ventilador, protetor solar e muita água. Maio em Cuiabá é “fresquinho”." },
+    { name: "Ponte aérea SP ↔ Cuiabá para matar a saudade da família", price: 513.29, cat: "Divertidos", photo: "fotos/presente-ani-cuiaba.webp", focus: "50% 40%", note: "A Ani mudou para SP, mas o coração ainda pega voo para Cuiabá." },
+    { name: "Ficha para pedir música pro DJ", price: 327.84, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745", note: "Pedido sujeito à aprovação dos noivos (e do DJ)." },
+    { name: "Controle remoto extra para acabar com a briga do sofá", price: 196.54, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1", note: "Um para cada. Paz garantida no lar." },
+    { name: "Tampão de ouvido para a noiva aguentar o ronco do noivo", price: 238.91, cat: "Divertidos", photo: "fotos/presente-tampao.webp", focus: "50% 25%", note: "A cara de quem passou a noite inteira ouvindo o ronco." },
+    { name: "Seguro contra excesso de bagagem da noiva", price: 418.62, cat: "Divertidos", photo: "fotos/presente-bagagem.webp", focus: "50% 30%", note: "Foto real. Detalhe: era uma viagem de 5 dias." },
+    { name: "Kit paciência para o noivo esperar a noiva se arrumar", price: 297.36, cat: "Divertidos", photo: "https://images.unsplash.com/photo-1541480601022-2308c0f02487", note: "Lembrando: no dia do casamento, 19h30 impreterivelmente!" },
+    { name: "Vale-soneca no domingo pós-casamento", price: 213.68, cat: "Divertidos", photo: "fotos/vale-soneca.webp", focus: "42% 72%", note: "Foto real do noivo em seu habitat natural." },
+    { name: "Cota para chegar logo aos 10 países (e ao bebê)", price: 1012.84, cat: "Divertidos", photo: "fotos/presente-bebe-banho.webp", focus: "35% 65%", note: "O combinado é claro: 10 países, depois um bebê. Ajude a acelerar." },
+    { name: "All black outfit", price: 2742.18, cat: "Divertidos", photo: "fotos/presente-all-black.webp", focus: "50% 55%", note: "Convidados de preto, noiva de branco: a foto mais elegante da festa." },
+    { name: "Permissão para usar branco no casamento", price: 30487.52, cat: "Divertidos", photo: "fotos/presente-branco.webp", focus: "50% 38%", note: "Use por sua conta e risco." }
   ],
+  // Posição fixa (1 = primeiro) de alguns presentes na aba "Todos"; no computador são 4 por fileira
+  giftPins: { "Mesa de jantar": 1, "Geladeira de 3 portas": 10, "Cota do álbum de casamento": 56 },
   maxInstallments: 12,
 
   faq: [
-    { q: "Até quando posso confirmar presença?", a: "Pedimos que confirme até 1º de abril de 2027, para fecharmos os números com o buffet." },
     { q: "A que horas devo chegar?", a: "O casamento civil abre a noite às 19h30 impreterivelmente, então chegue com uns 20 minutos de antecedência. Depois, segue o jantar no próprio Mahalo." },
     { q: "Posso levar acompanhante?", a: "O convite é nominal. Se o seu convite incluir acompanhante, ele virá indicado no envelope ou na mensagem que você recebeu." },
     { q: "Como funciona a lista de presentes?", a: "Os itens são simbólicos: o valor é convertido em dinheiro para os noivos. Você pode pagar via Pix ou cartão de crédito em até 12x." },
@@ -517,7 +602,7 @@ const shortDate = eventDate.toLocaleDateString("pt-BR", { day: "2-digit", month:
 // Cabeçalho
 $("#monogram").textContent = CONFIG.monogram;
 $("#footerMono").textContent = CONFIG.monogram;
-$("#heroNames").innerHTML = `${esc(CONFIG.couple.a)}<span class="plus">+</span>${esc(CONFIG.couple.b)}`;
+$("#heroNames").innerHTML = `${esc(CONFIG.couple.a)}<span class="amp">e</span>${esc(CONFIG.couple.b)}`;
 $("#heroPhotos").innerHTML = CONFIG.heroPhotos.map((src, i) => `<img src="${src}" alt="${esc(CONFIG.couple.a)} e ${esc(CONFIG.couple.b)}, foto ${i + 1}">`).join("");
 $("#heroDate").textContent = shortDate;
 $("#bandPhoto").src = CONFIG.bandPhoto;
@@ -536,18 +621,27 @@ function tick() {
 tick(); setInterval(tick, 1000);
 
 // História
-$("#storyText").innerHTML = CONFIG.story.paragraphs.map(p => `<p>${esc(p)}</p>`).join("");
+const { paragraphs: storyParas, preview: storyPreview = storyParas.length } = CONFIG.story;
+$("#storyText").innerHTML = storyParas.map((p, i) =>
+  `<p${i >= storyPreview ? ' class="more"' : ""}>${esc(p)}${i === storyPreview - 1 && storyParas.length > storyPreview ? '<span class="dots"> …</span>' : ""}</p>`).join("")
+  + (storyParas.length > storyPreview ? '<button class="story-toggle" type="button" aria-expanded="false">Continuar lendo</button>' : "");
+$("#storyText").addEventListener("click", e => {
+  const b = e.target.closest(".story-toggle"); if (!b) return;
+  const open = $(".story-text").classList.toggle("open");
+  b.textContent = open ? "Mostrar menos" : "Continuar lendo";
+  b.setAttribute("aria-expanded", open);
+  if (!open) $("#historia").scrollIntoView({ behavior: "smooth" });
+});
 $("#timeline").innerHTML = CONFIG.story.timeline.map(t => `<li><strong>${esc(t.title)}</strong><span>${esc(t.when)}</span></li>`).join("");
 
-// Volta ao mundo + lightbox
+// Volta ao mundo
 const trips = CONFIG.trips.slice(0, CONFIG.tripGoal);
-const photos = trips.filter(t => t.photo).map(t => ({ src: t.photo, alt: `${t.country} · ${t.city}` }));
 $("#worldIntro").textContent = CONFIG.tripIntro;
 $("#worldCount").textContent = `${trips.length} de ${CONFIG.tripGoal} países`;
 requestAnimationFrame(() => setTimeout(() => $("#worldBar").style.width = `${trips.length / CONFIG.tripGoal * 100}%`, 300));
 const cap = t => `<div class="cap"><strong>${esc(t.country)}</strong><span>${esc(t.city || "")}</span></div>`;
 $("#world").innerHTML = trips.map(t => t.photo
-    ? `<button class="trip" data-i="${photos.findIndex(p => p.src === t.photo)}" aria-label="Ampliar foto: ${esc(t.country)}"><img src="${t.photo}" alt="${esc(t.country)}" loading="lazy" style="object-position:${t.focus || "50% 50%"}">${cap(t)}</button>`
+    ? `<div class="trip"><img src="${t.photo}" alt="${esc(t.country)}" loading="lazy" style="object-position:${t.focus || "50% 50%"}">${cap(t)}</div>`
     : `<div class="trip no-photo"><span class="hint">Foto em breve</span>${cap(t)}</div>`).join("")
   + Array.from({ length: CONFIG.tripGoal - trips.length }, (_, k) => {
     const n = trips.length + k + 1, last = n === CONFIG.tripGoal;
@@ -555,27 +649,13 @@ $("#world").innerHTML = trips.map(t => t.photo
       ? `<div class="trip loading goal"><span class="emoji">👶</span><strong>Destino ${n}</strong><span>e depois…</span></div>`
       : `<div class="trip loading"><div class="spinner"></div><strong>Destino ${n}</strong><span>carregando…</span></div>`;
   }).join("");
-let lbIndex = 0;
-const lb = $("#lightbox");
-function showLb(i) { lbIndex = (i + photos.length) % photos.length; $("#lbImg").src = photos[lbIndex].src; $("#lbImg").alt = photos[lbIndex].alt; lb.classList.add("open"); }
-$("#world").addEventListener("click", e => { const b = e.target.closest("button.trip"); if (b) showLb(+b.dataset.i); });
-$(".lb-close").onclick = () => lb.classList.remove("open");
-$(".lb-prev").onclick = () => showLb(lbIndex - 1);
-$(".lb-next").onclick = () => showLb(lbIndex + 1);
-lb.addEventListener("click", e => { if (e.target === lb) lb.classList.remove("open"); });
-document.addEventListener("keydown", e => {
-  if (lb.classList.contains("open")) {
-    if (e.key === "Escape") lb.classList.remove("open");
-    if (e.key === "ArrowLeft") showLb(lbIndex - 1);
-    if (e.key === "ArrowRight") showLb(lbIndex + 1);
-  } else if (e.key === "Escape") closeModal();
-});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 
 // Evento
 $("#eventDateLong").textContent = longDate.charAt(0).toUpperCase() + longDate.slice(1);
 $("#events").innerHTML = CONFIG.events.map((ev, i) => `
   <div class="card event-card">
-    <div class="icon">${ev.icon}</div>
+    <div class="round-icon"><span class="mono">${esc(CONFIG.monogram)}</span></div>
     <h3>${esc(ev.title)}</h3>
     <div class="time">${esc(ev.time)}</div>
     <div class="place">${esc(ev.place)}</div>
@@ -608,20 +688,53 @@ $("#events").addEventListener("click", e => {
 });
 
 // Hospedagem
+const promo = CONFIG.promo;
+$("#promo").innerHTML = promo ? `
+  ${promo.tag ? `<span class="tag">${esc(promo.tag)}</span>` : ""}
+  <h4>${esc(promo.title)}</h4><p>${esc(promo.text)}</p>` : "";
+$("#promo").hidden = !promo;
 $("#stays").innerHTML = CONFIG.stays.map(s => `
   <div class="card stay">
     ${s.tag ? `<span class="tag">${esc(s.tag)}</span>` : ""}
-    <h4>${esc(s.name)}</h4><div class="meta">${esc(s.meta)}</div><p>${esc(s.text)}</p>
-    ${s.link && s.link !== "#" ? `<a class="btn btn-outline" href="${s.link}" target="_blank" rel="noopener">Ver opção</a>` : ""}
+    <h4>${esc(s.name)}</h4><div class="meta">${esc(s.meta)}</div>${s.text ? `<p>${esc(s.text)}</p>` : ""}
+    ${s.links ? `<ul class="stay-links">${s.links.map(l => l.heading ? `<li class="stay-group">${esc(l.heading)}</li>` : `<li><a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>${l.note ? `<span>${esc(l.note)}</span>` : ""}</li>`).join("")}</ul>` : ""}
+    ${s.link && s.link !== "#" ? `<a class="btn btn-outline" href="${s.link}" target="_blank" rel="noopener">${esc(s.btn || "Ver opção")}</a>` : ""}
   </div>`).join("");
+const tips = CONFIG.tips;
+$("#tips").innerHTML = `
+  <h3>${esc(tips.title)}</h3><p class="tips-intro">${esc(tips.intro)}</p>
+  <div class="tips-grid">${tips.groups.map(g => `
+    <div><h4>${esc(g.title)}</h4><ul>${g.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+  </div>`;
 
 // Presentes
-let currentCat = "Todos";
+let currentCat = "Todos", currentSort = "";
+const sorters = { asc: (a, b) => a.price - b.price, desc: (a, b) => b.price - a.price, az: (a, b) => a.name.localeCompare(b.name, "pt-BR") };
+const giftImg = url => url.startsWith("http") ? `${url}?w=600&h=450&fit=crop&auto=format&q=70` : url;
+// "Todos" em destaque: intercala as categorias ao longo da lista (sempre na mesma ordem)
+const mixCats = list => {
+  const byCat = {};
+  list.forEach(g => (byCat[g.cat] = byCat[g.cat] || []).push(g));
+  return Object.values(byCat)
+    .flatMap((arr, c) => arr.map((g, k) => ({ g, t: (k + 0.3 + c * 0.17) / arr.length })))
+    .sort((a, b) => a.t - b.t).map(x => x.g);
+};
 function renderGifts() {
-  const list = CONFIG.gifts.map((g, i) => ({ ...g, i })).filter(g => currentCat === "Todos" || g.cat === currentCat);
+  let list = CONFIG.gifts.map((g, i) => ({ ...g, i })).filter(g => currentCat === "Todos" || g.cat === currentCat);
+  if (sorters[currentSort]) list.sort(sorters[currentSort]);
+  else if (currentCat === "Todos") {
+    list = mixCats(list);
+    const pins = Object.entries(CONFIG.giftPins || {}).sort((a, b) => a[1] - b[1]);
+    const pinned = pins.map(([n]) => list.find(g => g.name === n)).filter(Boolean);
+    list = list.filter(g => !pinned.includes(g));
+    pins.forEach(([n, pos]) => { const g = pinned.find(x => x.name === n); if (g) list.splice(pos - 1, 0, g); });
+  }
   $("#gifts").innerHTML = list.map(g => `
-    <article class="gift">
-      <img src="https://picsum.photos/seed/gift-${g.i}/600/450" alt="" loading="lazy">
+    <article class="gift" id="gift-${g.i}">
+      <button class="gift-photo" type="button" aria-label="${esc(g.name)}: ${esc(g.note || "")}">
+        <img src="${giftImg(g.photo)}" alt="" loading="lazy"${g.focus ? ` style="object-position:${g.focus}"` : ""}>
+        ${g.note ? `<span class="gift-hint">Por quê?</span><span class="gift-note">${esc(g.note)}</span>` : ""}
+      </button>
       <div class="gift-body">
         <div class="gift-cat">${esc(g.cat)}</div>
         <h4>${esc(g.name)}</h4>
@@ -637,6 +750,22 @@ $("#giftFilters").addEventListener("click", e => {
   currentCat = b.dataset.cat;
   document.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === b));
   renderGifts();
+});
+$("#giftSort").addEventListener("change", e => { currentSort = e.target.value; renderGifts(); });
+// Toque no celular: mostra/esconde a frase da foto
+$("#gifts").addEventListener("click", e => {
+  const ph = e.target.closest(".gift-photo"); if (!ph) return;
+  document.querySelectorAll(".gift-photo.show").forEach(o => o !== ph && o.classList.remove("show"));
+  ph.classList.toggle("show");
+});
+// "Surpreenda-me": sorteia um presente da lista visível e destaca
+$("#giftRandom").addEventListener("click", () => {
+  const cards = [...document.querySelectorAll("#gifts .gift")];
+  const card = cards[Math.floor(Math.random() * cards.length)];
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.classList.remove("pick"); void card.offsetWidth; card.classList.add("pick");
+  document.querySelectorAll(".gift-photo.show").forEach(o => o.classList.remove("show"));
+  card.querySelector(".gift-photo").classList.add("show");
 });
 renderGifts();
 
@@ -698,27 +827,6 @@ $("#giftForm").addEventListener("submit", e => {
   step2.querySelector("[data-done]").onclick = () => {
     step2.innerHTML = `<div class="success" style="display:block"><h3>Muito obrigado, ${esc(name.split(" ")[0])}!</h3><p>Seu carinho vai fazer parte da nossa história.</p><button class="btn btn-solid" style="color:#fff;margin-top:18px" data-close>Fechar</button></div>`;
   };
-});
-
-// RSVP (MVP: salva só neste navegador)
-$("#rsvpDeadline").textContent = `Pedimos, por gentileza, que confirme até ${CONFIG.rsvpDeadline}.`;
-const rsvpForm = $("#rsvpForm");
-rsvpForm.addEventListener("change", e => {
-  if (e.target.name === "attending") $("#guestRow").style.display = e.target.value === "nao" ? "none" : "";
-});
-rsvpForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(rsvpForm));
-  data.at = new Date().toISOString();
-  try {
-    const all = JSON.parse(localStorage.getItem("rsvp") || "[]");
-    all.push(data); localStorage.setItem("rsvp", JSON.stringify(all));
-  } catch (_) { /* armazenamento indisponível: segue sem salvar */ }
-  const first = esc(data.name.trim().split(" ")[0]);
-  $("#rsvpSuccessText").innerHTML = data.attending === "sim"
-    ? `${first}, sua presença está confirmada. Mal podemos esperar para celebrar com você!`
-    : `${first}, que pena! Obrigado por avisar, você estará no nosso coração.`;
-  rsvpForm.style.display = "none"; $("#rsvpSuccess").style.display = "block";
 });
 
 // FAQ

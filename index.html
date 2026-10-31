@@ -31,8 +31,6 @@
   a { color: inherit; }
   button { font-family: inherit; cursor: pointer; }
 
-  /* Faixa MVP */
-  .mvp-bar { background: var(--ink); color: #EDE6DA; text-align: center; font-size: 12px; letter-spacing: .04em; padding: 6px 16px; }
 
   /* Navegação */
   nav { position: sticky; top: 0; z-index: 50; background: rgba(251,248,243,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
@@ -232,25 +230,17 @@
   .modal-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 26px; color: var(--muted); }
   .modal h3 { font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.2; padding-right: 24px; }
   .modal .sum { color: var(--muted); font-size: 14px; margin: 4px 0 18px; }
-  .pay-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 16px; }
-  .pay-tabs button { border: 1px solid var(--line); background: var(--white); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--muted); }
-  .pay-tabs button.active { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
-  .pix-box { text-align: center; background: var(--white); border: 1px dashed var(--line); border-radius: 10px; padding: 18px; }
-  .qr { width: 150px; height: 150px; margin: 0 auto 10px; display: grid; grid-template-columns: repeat(21, 1fr); }
-  .qr i { background: var(--ink); }
-  .qr i.o { background: transparent; }
-  .notice { font-size: 12px; color: var(--muted); background: var(--bg-alt); border-radius: 8px; padding: 10px 12px; margin-top: 14px; }
+  .gm-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 10px; margin-bottom: 18px; background: var(--bg-alt); }
+  .gm-steps { margin: 0 0 22px 18px; color: var(--ink); font-size: 14px; line-height: 1.6; }
+  .gm-steps li { margin-bottom: 6px; }
+  .modal .btn-solid { display: block; text-align: center; color: var(--white); }
+  .gm-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
 
   /* Formulários */
-  .form { display: grid; gap: 16px; }
   label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 6px; }
   input, select, textarea { width: 100%; font: inherit; font-weight: 400; font-size: 15px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(138,154,123,.18); }
   textarea { resize: vertical; min-height: 90px; }
-  .form .btn { justify-self: center; color: var(--white); margin-top: 6px; }
-  .success { text-align: center; padding: 20px 0; display: none; }
-  .success h3 { font-family: var(--serif); font-size: 34px; font-weight: 400; }
-  .success p { color: var(--muted); }
 
   /* FAQ */
   details { border-bottom: 1px solid var(--line); padding: 18px 0; }
@@ -271,7 +261,6 @@
 </head>
 <body>
 
-<div class="mvp-bar">Versão de referência (MVP): pagamentos são simulados.</div>
 
 <nav>
   <div class="nav-inner">
@@ -383,27 +372,16 @@
 <div class="modal" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="gm-title">
   <div class="modal-box">
     <button class="modal-close" aria-label="Fechar" data-close>×</button>
-    <div id="gm-step1">
-      <h3 id="gm-title"></h3>
-      <div class="sum" id="gm-sum"></div>
-      <form class="form" id="giftForm">
-        <div><label for="g-name">Seu nome</label><input id="g-name" required></div>
-        <div><label for="g-msg">Mensagem para os noivos</label><textarea id="g-msg" placeholder="Opcional"></textarea></div>
-        <div>
-          <label>Forma de pagamento</label>
-          <div class="pay-tabs">
-            <button type="button" data-pay="pix" class="active">Pix</button>
-            <button type="button" data-pay="card">Cartão de crédito</button>
-          </div>
-          <div id="pay-card" hidden>
-            <label for="g-inst">Parcelamento</label>
-            <select id="g-inst"></select>
-          </div>
-        </div>
-        <button class="btn btn-solid" type="submit">Continuar</button>
-      </form>
-    </div>
-    <div id="gm-step2" hidden></div>
+    <img class="gm-photo" id="gm-photo" alt="">
+    <h3 id="gm-title"></h3>
+    <div class="sum" id="gm-sum"></div>
+    <ol class="gm-steps">
+      <li>Abra a nossa lista na iCasei, o ambiente seguro de pagamento.</li>
+      <li>Encontre <strong id="gm-name"></strong> e clique em <strong>Comprar</strong>.</li>
+      <li>Pague com Pix ou cartão e deixe uma mensagem para a gente.</li>
+    </ol>
+    <a class="btn btn-solid" id="gm-go" target="_blank" rel="noopener">Ir para a lista na iCasei</a>
+    <p class="gm-note">Os presentes aparecem em ordem alfabética. A taxa do site é somada no pagamento.</p>
   </div>
 </div>
 
@@ -580,6 +558,8 @@ const CONFIG = {
   // Posição fixa (1 = primeiro) de alguns presentes na aba "Todos"; no computador são 4 por fileira
   giftPins: { "Mesa de jantar": 1, "Geladeira de 3 portas": 10, "Cota do álbum de casamento": 56 },
   maxInstallments: 12,
+  // Lista na iCasei, onde o convidado paga (Pix ou cartão)
+  giftStoreUrl: "https://sites.icasei.com.br/aniadnyevinicius/pages/39015775",
 
   faq: [
     { q: "A que horas devo chegar?", a: "O casamento civil abre a noite às 19h30 impreterivelmente, então chegue com uns 20 minutos de antecedência. Depois, segue o jantar no próprio Mahalo." },
@@ -769,64 +749,21 @@ $("#giftRandom").addEventListener("click", () => {
 });
 renderGifts();
 
-// Modal de presente (simulação)
+// Modal de presente: o pagamento é feito na lista da iCasei
 const modal = $("#giftModal");
-let selGift = null, payMethod = "pix";
 function closeModal() { modal.classList.remove("open"); }
 modal.addEventListener("click", e => { if (e.target === modal || e.target.hasAttribute("data-close")) closeModal(); });
 $("#gifts").addEventListener("click", e => {
   const b = e.target.closest("[data-gift]"); if (!b) return;
-  selGift = CONFIG.gifts[+b.dataset.gift];
-  $("#gm-title").textContent = selGift.name;
-  $("#gm-sum").textContent = brl(selGift.price);
-  $("#g-inst").innerHTML = Array.from({ length: CONFIG.maxInstallments }, (_, i) => `<option value="${i + 1}">${i + 1}x de ${brl(selGift.price / (i + 1))}</option>`).join("");
-  $("#gm-step1").hidden = false; $("#gm-step2").hidden = true;
-  $("#giftForm").reset(); setPay("pix");
+  const g = CONFIG.gifts[+b.dataset.gift];
+  $("#gm-photo").src = giftImg(g.photo);
+  $("#gm-photo").style.objectPosition = g.focus || "";
+  $("#gm-title").textContent = g.name;
+  $("#gm-name").textContent = g.name;
+  $("#gm-sum").textContent = `${brl(g.price)} · Pix ou cartão em até ${CONFIG.maxInstallments}x`;
+  $("#gm-go").href = CONFIG.giftStoreUrl;
   modal.classList.add("open");
-  setTimeout(() => $("#g-name").focus(), 50);
-});
-function setPay(m) {
-  payMethod = m;
-  document.querySelectorAll("[data-pay]").forEach(b => b.classList.toggle("active", b.dataset.pay === m));
-  $("#pay-card").hidden = m !== "card";
-}
-document.querySelectorAll("[data-pay]").forEach(b => b.onclick = () => setPay(b.dataset.pay));
-
-function fakeQr() {
-  // Padrão visual ilustrativo (não é um QR Code válido)
-  let cells = "";
-  for (let y = 0; y < 21; y++) for (let x = 0; x < 21; x++) {
-    const finder = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13);
-    let on;
-    if (finder) { const fx = x % 14, fy = y % 14; const r = Math.max(Math.abs(fx - 3), Math.abs(fy - 3)); on = r !== 2; }
-    else on = ((x * 7 + y * 13 + x * y) % 5) < 2;
-    cells += `<i class="${on ? "" : "o"}"></i>`;
-  }
-  return `<div class="qr">${cells}</div>`;
-}
-$("#giftForm").addEventListener("submit", e => {
-  e.preventDefault();
-  const name = $("#g-name").value.trim();
-  const step2 = $("#gm-step2");
-  if (payMethod === "pix") {
-    step2.innerHTML = `
-      <h3>Pague com Pix</h3>
-      <div class="sum">${esc(selGift.name)} · ${brl(selGift.price)}</div>
-      <div class="pix-box">${fakeQr()}<div style="font-size:13px;color:var(--muted)">Escaneie o QR Code ou use o Pix copia e cola</div></div>
-      <div class="notice"><strong>Simulação.</strong> No site final, o QR Code é gerado pela iCasei e o pagamento é confirmado automaticamente.</div>
-      <div style="text-align:center;margin-top:18px"><button class="btn btn-solid" style="color:#fff" data-done>Já paguei</button></div>`;
-  } else {
-    const n = +$("#g-inst").value;
-    step2.innerHTML = `
-      <h3>Pagamento no cartão</h3>
-      <div class="sum">${esc(selGift.name)} · ${n}x de ${brl(selGift.price / n)}</div>
-      <div class="notice"><strong>Simulação.</strong> No site final, os dados do cartão são digitados no checkout seguro da iCasei. Este MVP não coleta dados de cartão.</div>
-      <div style="text-align:center;margin-top:18px"><button class="btn btn-solid" style="color:#fff" data-done>Simular pagamento aprovado</button></div>`;
-  }
-  $("#gm-step1").hidden = true; step2.hidden = false;
-  step2.querySelector("[data-done]").onclick = () => {
-    step2.innerHTML = `<div class="success" style="display:block"><h3>Muito obrigado, ${esc(name.split(" ")[0])}!</h3><p>Seu carinho vai fazer parte da nossa história.</p><button class="btn btn-solid" style="color:#fff;margin-top:18px" data-close>Fechar</button></div>`;
-  };
+  setTimeout(() => $("#gm-go").focus(), 50);
 });
 
 // FAQ

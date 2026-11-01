@@ -216,6 +216,12 @@
   .gift-tools { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin: -14px 0 34px; }
   .gift-tools label { margin: 0; }
   .gift-tools select { width: auto; padding: 8px 14px; font-size: 13px; }
+  /* Celular: mostra 6 presentes e o resto fica atrás do "Ver mais" */
+  .gifts-more { display: none; text-align: center; margin-top: 24px; }
+  @media (max-width: 700px) {
+    .gifts.collapsed .gift:nth-child(n+7) { display: none; }
+    .gifts.collapsed + .gifts-more { display: block; }
+  }
   .photo-credit { text-align: center; font-size: 11px; color: var(--muted); margin-top: 28px; }
   .gift-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
   .gift-cat { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--leaf); font-weight: 500; }
@@ -359,6 +365,7 @@
       <button class="btn btn-outline" id="giftRandom" type="button">Surpreenda-me</button>
     </div>
     <div class="gifts" id="gifts"></div>
+    <div class="gifts-more"><button class="btn btn-outline" id="giftMore" type="button">Ver mais presentes</button></div>
     <p class="photo-credit">Fotos ilustrativas: Unsplash</p>
   </div>
 </section>
@@ -737,7 +744,11 @@ function renderGifts() {
         <button class="btn btn-solid" data-gift="${g.i}">Presentear</button>
       </div>
     </article>`).join("");
+  // No celular, cada nova lista (filtro ou ordem) volta a mostrar só os 6 primeiros
+  $("#gifts").classList.toggle("collapsed", list.length > 6);
+  $("#giftMore").textContent = `Ver mais presentes (${list.length - 6})`;
 }
+$("#giftMore").addEventListener("click", () => $("#gifts").classList.remove("collapsed"));
 $("#giftFilters").innerHTML = ["Todos", ...CONFIG.giftCategories].map(c => `<button class="chip${c === "Todos" ? " active" : ""}" data-cat="${c}">${c}</button>`).join("");
 $("#giftFilters").addEventListener("click", e => {
   const b = e.target.closest("[data-cat]"); if (!b) return;
@@ -756,6 +767,7 @@ $("#gifts").addEventListener("click", e => {
 $("#giftRandom").addEventListener("click", () => {
   const cards = [...document.querySelectorAll("#gifts .gift")];
   const card = cards[Math.floor(Math.random() * cards.length)];
+  if (!card.offsetParent) $("#gifts").classList.remove("collapsed");
   card.scrollIntoView({ behavior: "smooth", block: "center" });
   card.classList.remove("pick"); void card.offsetWidth; card.classList.add("pick");
   document.querySelectorAll(".gift-photo.show").forEach(o => o.classList.remove("show"));

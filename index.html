@@ -313,6 +313,7 @@
       <div class="countdown" id="countdown" aria-live="off"></div>
       <div class="hero-ctas">
         <a href="#presentes" class="btn btn-light">Lista de presentes</a>
+        <a class="btn" id="rsvpBtn" target="_blank" rel="noopener" hidden>Confirme sua presença</a>
       </div>
     </div>
     <div class="band-photo-wrap"><img class="band-photo" id="bandPhoto" alt=""></div>
@@ -612,6 +613,9 @@ const CONFIG = {
   // Lista na iCasei, onde o convidado paga (Pix ou cartão)
   giftStoreUrl: "https://sites.icasei.com.br/aniadnyevinicius/pages/39015775",
 
+  // Botão "Confirme sua presença" na faixa da contagem: WhatsApp da Papel de Sonhos Cerimonial com a mensagem pronta
+  rsvpUrl: "https://wa.me/556599298848?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%2C%20no%20dia%2001%2F05%2F2027.%0A%0ANome(s)%3A%20",
+
   // links = botões de WhatsApp dentro da resposta; note = frase em destaque no fim
   faq: [
     { q: "Confirmação de presença", a: "A confirmação de presença e qualquer dúvida sobre o casamento devem ser feitas diretamente com a nossa assessoria, Papel de Sonhos Cerimonial. Se for algo mais específico, pode falar com a noivinha.",
@@ -657,6 +661,7 @@ function tick() {
     .map(([n, l]) => `<div><strong>${String(n).padStart(2, "0")}</strong><span>${l}</span></div>`).join("");
 }
 tick(); setInterval(tick, 1000);
+if (CONFIG.rsvpUrl) { $("#rsvpBtn").href = CONFIG.rsvpUrl; $("#rsvpBtn").hidden = false; }
 
 // História
 const { paragraphs: storyParas, preview: storyPreview = storyParas.length } = CONFIG.story;

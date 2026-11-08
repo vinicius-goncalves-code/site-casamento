@@ -466,7 +466,7 @@ const CONFIG = {
 
   events: [
     {
-      title: "Jantar e casamento civil", time: "19h30",
+      title: "Cerimônia civil e jantar de casamento", time: "19h30",
       highlight: "O casamento civil acontece logo no início, às 19h30 em ponto. Chegue com antecedência!",
       place: "Mahalo Cozinha Criativa",
       address: "Rua Presidente Castelo Branco, 359 · Quilombo · Cuiabá/MT · 78125-700",
@@ -568,12 +568,13 @@ const CONFIG = {
     { name: "Micro-ondas", price: 897.63, cat: "Casa nova", photo: "fotos/presente-microondas.webp", focus: "50% 48%", note: "Para esquentar a marmita da sogra." },
     { name: "Filtro de água", price: 1143.86, cat: "Casa nova", photo: "fotos/presente-filtro.webp", focus: "50% 25%", note: "Hidratação obrigatória para o noivo paulista no calor de Cuiabá." },
     { name: "Robô aspirador Xiaomi de última geração, para acabar com a discussão de quem varre a casa", price: 2946.81, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1762859731349-c9ff2808b672", note: "Ele varre e passa pano. A gente discute outra coisa." },
-    { name: "Cota do jogo de panelas Le Creuset", price: 4672.35, cat: "Casa nova", photo: "fotos/presente-le-creuset.webp", focus: "50% 50%", note: "Panela bonita assim dá vontade de cozinhar. Em tese." },
+    { name: "Jogo de panelas Le Creuset", price: 4672.35, cat: "Casa nova", photo: "fotos/presente-le-creuset.webp", focus: "50% 50%", note: "Panela bonita assim dá vontade de cozinhar. Em tese." },
     { name: "Saleiro e pimenteiro Le Creuset", price: 827.46, cat: "Casa nova", photo: "fotos/presente-sal-pimenta.jpg", focus: "50% 62%", note: "O sal e a pimenta da vida a dois. Um não vive sem o outro." },
     { name: "Aparelho de jantar", price: 1298.47, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1631008788127-57317667a0d2", note: "Para o primeiro jantar de casados lá em casa. Vocês estão convidados." },
     { name: "Jogo de talheres", price: 487.93, cat: "Casa nova", photo: "fotos/presente-talheres.webp", focus: "50% 55%", note: "Chega de garfo desparceirado." },
     { name: "Faqueiro", price: 1243.67, cat: "Casa nova", photo: "fotos/presente-faqueiro.webp", focus: "50% 45%", note: "Para cortar o bolo de aniversário de casamento todo ano." },
     { name: "Jogo de copos", price: 312.84, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1554140426-5e830b73a5e8", note: "Porque visita sempre quebra um." },
+    { name: "Jogo de xícaras de porcelana", price: 347.68, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1787762405935-006e432a0159", focus: "42% 55%", note: "Chá de camomila em porcelana fina: o calmante oficial da noivinha até o grande dia." },
     { name: "Máquina de café espresso", price: 1513.82, cat: "Casa nova", photo: "fotos/presente-cafeteira.webp", focus: "50% 50%", note: "Combustível oficial das manhãs de segunda-feira." },
     { name: "Jogo de cama queen", price: 587.43, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1601276174812-63280a55656e", note: "Espaço suficiente para acabar com a guerra do cobertor." },
     { name: "Cama queen", price: 2487.19, cat: "Casa nova", photo: "https://images.unsplash.com/photo-1560185128-e173042f79dd", note: "O lugar oficial do vale-soneca." },
@@ -733,7 +734,7 @@ $("#events").addEventListener("click", e => {
     "END:VEVENT", "END:VCALENDAR"].join("\r\n");
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
-  a.download = `${ev.title.toLowerCase()}-casamento.ics`; a.click();
+  a.download = "casamento-aniadny-e-vinicius.ics"; a.click();
 });
 
 // Botões com ícone (WhatsApp ou telefone), usados na faixa da hospedagem e no FAQ

@@ -40,7 +40,7 @@
   .nav-links a { text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); transition: color .2s; }
   .nav-links a:hover { color: var(--ink); }
   .nav-toggle { display: none; background: none; border: 0; font-size: 24px; color: var(--ink); }
-  @media (max-width: 860px) {
+  @media (max-width: 1040px) {
     .nav-toggle { display: block; }
     .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); }
     .nav-links.open { display: flex; }
@@ -295,6 +295,7 @@
       <li><a href="#evento">O grande dia</a></li>
       <li><a href="#hospedagem">Hospedagem</a></li>
       <li><a href="#faq">Dúvidas</a></li>
+      <li id="navMessages" hidden><a target="_blank" rel="noopener">Mensagens aos noivos</a></li>
     </ul>
   </div>
 </nav>
@@ -613,6 +614,9 @@ const CONFIG = {
   // Lista na iCasei, onde o convidado paga (Pix ou cartão)
   giftStoreUrl: "https://sites.icasei.com.br/aniadnyevinicius/pages/39015775",
 
+  // Item "Mensagens aos noivos" no menu do topo: mural de recados gratuito da iCasei (abre em nova aba)
+  messagesUrl: "https://sites.icasei.com.br/aniadnyevinicius/messages",
+
   // Botão "Confirme sua presença" na faixa da contagem: WhatsApp da Papel de Sonhos Cerimonial com a mensagem pronta
   rsvpUrl: "https://wa.me/556599298848?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%2C%20no%20dia%2001%2F05%2F2027.%0A%0ANome(s)%3A%20",
 
@@ -661,6 +665,7 @@ function tick() {
     .map(([n, l]) => `<div><strong>${String(n).padStart(2, "0")}</strong><span>${l}</span></div>`).join("");
 }
 tick(); setInterval(tick, 1000);
+if (CONFIG.messagesUrl) { $("#navMessages a").href = CONFIG.messagesUrl; $("#navMessages").hidden = false; }
 if (CONFIG.rsvpUrl) { $("#rsvpBtn").href = CONFIG.rsvpUrl; $("#rsvpBtn").hidden = false; }
 
 // História

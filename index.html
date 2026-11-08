@@ -180,19 +180,29 @@
   .stay-links a { font-family: var(--serif); font-size: 19px; color: var(--accent-dark); text-decoration: none; }
   .stay-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .stay-links span { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .stay-links li.has-badge { display: flex; flex-wrap: wrap; align-items: center; column-gap: 8px; row-gap: 4px; }
+  .stay-links li.has-badge span { flex-basis: 100%; }
+  .badge { padding: 3px 9px; border-radius: 999px; background: var(--accent-dark); color: var(--white); font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
   .stay-links .stay-group { padding: 14px 0 4px; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--leaf); }
   .stay-links .stay-group:first-child { padding-top: 0; }
   .promo { margin-bottom: 24px; text-align: center; border: 1px solid var(--accent); }
   .promo h4 { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--accent-dark); }
   .promo p { color: var(--muted); font-size: 15px; max-width: 620px; margin: 6px auto 0; }
+  .promo .faq-links { justify-content: center; }
+  .promo p.promo-hours { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dark); }
+  .promo p.promo-note { font-size: 13px; font-style: italic; margin-top: 16px; }
   .tips { margin-top: 24px; }
   .tips h3 { font-family: var(--serif); font-size: 30px; font-weight: 400; }
   .tips-intro { color: var(--muted); font-size: 14px; margin: 2px 0 22px; }
+  .tips-car { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 12px; padding: 12px 16px; margin: -8px 0 24px; font-size: 14px; color: var(--ink); }
+  .tips-car svg { width: 20px; height: 20px; fill: var(--accent-dark); flex: none; }
   .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
   .tips h4 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--leaf); font-weight: 500; margin-bottom: 8px; }
   .tips ul { list-style: none; }
   .tips li { font-size: 15px; padding: 6px 0; border-bottom: 1px solid var(--line); }
   .tips li:last-child { border-bottom: 0; }
+  .tips .badge { display: inline-block; margin-left: 8px; vertical-align: 2px; }
+  .tips .tip-note { display: block; font-size: 13px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
   @media (max-width: 760px) { .tips-grid { grid-template-columns: 1fr; gap: 18px; } }
   .tag { display: inline-block; font-size: 11px; background: var(--bg-alt); color: var(--accent-dark); border-radius: 999px; padding: 3px 10px; margin-bottom: 14px; font-weight: 500; }
 
@@ -467,13 +477,15 @@ const CONFIG = {
     { title: "Clima", text: "Maio é o início da seca em Cuiabá: dias quentes, noites agradáveis. Vale levar algo leve para a noite e se hidratar bem." }
   ],
 
-  // links = lista de links dentro do card; btn = texto do botão (padrão "Ver opção")
+  // links = lista de links dentro do card (badge = selo ao lado do nome); btn = texto do botão (padrão "Ver opção")
   stays: [
     { name: "Onde se hospedar", meta: "Nossas indicações", links: [
       { label: "Intercity Cuiabá", url: "https://www.intercityhoteis.com.br/hotel-cuiaba/hotel-intercity-cuiaba" },
       { label: "Deville Prime Cuiabá", url: "https://www.deville.com.br/hotel-deville-prime-cuiaba" },
       { label: "Hotel Amazon Getúlio", url: "https://www.hoteisamazon.com.br/hoteisamazon/amazon-getulio" },
-      { label: "Starlis Home Versátil", note: "Apartamento onde ficamos várias vezes nas nossas pontes aéreas (Booking ou Airbnb)", url: "https://www.booking.com/hotel/br/starlis-home-versatil-morada-do-sol.pt-br.html" }
+      { label: "Starlis Home Versátil", note: "Apartamento onde ficamos várias vezes nas nossas pontes aéreas (Booking ou Airbnb)", url: "https://www.booking.com/hotel/br/starlis-home-versatil-morada-do-sol.pt-br.html" },
+      { label: "Malai Manso Resort", badge: "Premium", note: "Resort famoso às margens do Lago do Manso, a cerca de 1h30 de Cuiabá", url: "https://www.malaimansoresort.com.br/" },
+      { label: "Casa do Valle", badge: "Premium", note: "Hotel boutique com spa em Chapada dos Guimarães, a pouco mais de 1h de Cuiabá", url: "https://www.casadovalle.com.br/" }
     ] },
     { name: "Chegando de avião", meta: "Aeroporto Marechal Rondon (CGB)", text: "O aeroporto fica em Várzea Grande, a cerca de 20–30 minutos do Mahalo. O Uber funciona super bem na cidade e, para quem quiser explorar as belezas de Cuiabá, a Movida e a Localiza ficam no próprio aeroporto.", link: "https://www.google.com/maps/search/?api=1&query=Aeroporto+Marechal+Rondon", btn: "Ver no mapa" },
     { name: "Salão de beleza", meta: "Cabelo, maquiagem e barba", text: "Agende com antecedência: é sábado e feriado, e a agenda lota rápido.", links: [
@@ -487,16 +499,41 @@ const CONFIG = {
     ] }
   ],
 
-  // Faixa de destaque acima dos cards de hospedagem (troque o texto quando os códigos saírem)
-  promo: { tag: "Em breve", title: "Códigos de desconto para convidados", text: "Estamos fechando um código promocional para a hospedagem no Intercity Cuiabá e outro para passagens aéreas com a LATAM. Assim que saírem, os códigos aparecem aqui. Se puder, espere um pouquinho antes de reservar!" },
+  // Faixa de destaque acima dos cards de hospedagem
+  // hours = horário de atendimento; links = botões (icon "tel" = ligar, "wa" = WhatsApp); note = linha menor no fim (apague quando não precisar)
+  promo: {
+    tag: "Para convidados",
+    title: "Condições especiais com a Tour House",
+    text: "Quem comprar pela Tour House tem condições especiais em passagens aéreas, reserva de hospedagem (incluindo o desconto no Intercity Cuiabá) e aluguel de carro. É só entrar em contato por telefone ou WhatsApp e avisar que é convidado(a) do nosso casamento.",
+    hours: "Atendimento aos convidados: segunda a sexta, das 9h às 17h",
+    links: [
+      { icon: "tel", label: "Ligar · (11) 3156-7777", url: "tel:+551131567777" },
+      { icon: "wa", label: "WhatsApp · (11) 3156-7777", url: "https://wa.me/551131567777?text=Ol%C3%A1!%20Sou%20convidado(a)%20do%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%20(01%2F05%2F2027)%20e%20gostaria%20de%20saber%20das%20condi%C3%A7%C3%B5es%20especiais%20para%20passagens%2C%20hospedagem%20e%20aluguel%20de%20carro." }
+    ]
+  },
 
   // Quadro "Aproveite Cuiabá" (passeios, restaurantes e comidas típicas)
+  // items: texto simples ou { name, note (linha menor embaixo), badge (selo ao lado do nome) }
   tips: {
     title: "Aproveite Cuiabá",
     intro: "Se der para ficar uns dias a mais, estas são as nossas indicações.",
+    car: "Para conhecer Cuiabá e fazer os passeios, recomendamos alugar um carro. A Tour House tem condições especiais de aluguel para os convidados.",
     groups: [
-      { title: "Passeios", items: ["Chapada dos Guimarães", "Cachoeira Véu da Noiva, ou explorar as diversas cachoeiras da Chapada", "Nobres"] },
-      { title: "Onde comer", items: ["Morro dos Ventos, em Chapada dos Guimarães", "Okada, em Cuiabá", "Choppão, em Cuiabá"] },
+      { title: "Passeios", items: [
+        "Chapada dos Guimarães",
+        "Cachoeira Véu da Noiva",
+        { name: "Cachoeira da Geladeira", note: "A mais gelada em que já entramos na vida" },
+        { name: "Cachoeira do Marimbondo", note: "Experiência muito legal, com trilha mais tranquila" },
+        { name: "Cachoeira dos Namorados", note: "Apaixonante" },
+        { name: "Nobres", badge: "Imperdível", note: "Muito parecido com Bonito (MS), a cerca de 2h de Cuiabá: rios de água cristalina para flutuar entre os peixes, como o Aquário Encantado, e a Lagoa das Araras no fim da tarde." }
+      ] },
+      { title: "Onde comer e beber", items: [
+        { name: "Cervejaria Louvada, em Cuiabá", note: "A cerveja local de Cuiabá e a cerveja do nosso casamento! Vale fazer o tour com o mestre cervejeiro." },
+        "Okada, em Cuiabá",
+        "Choppão, em Cuiabá",
+        "Morro dos Ventos, em Chapada dos Guimarães",
+        "Atmã, em Chapada dos Guimarães"
+      ] },
       { title: "Comidas típicas", items: ["Maria Isabel", "Farofa de banana", "Pacu assado", "Galinhada", "E muito mais!"] }
     ]
   },
@@ -688,24 +725,34 @@ $("#events").addEventListener("click", e => {
   a.download = `${ev.title.toLowerCase()}-casamento.ics`; a.click();
 });
 
+// Botões com ícone (WhatsApp ou telefone), usados na faixa da hospedagem e no FAQ
+const waIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const telIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+const linkBtn = l => `<a href="${l.url}"${l.url.startsWith("tel:") ? "" : ` target="_blank" rel="noopener"`}>${l.icon === "tel" ? telIcon : waIcon}${esc(l.label)}</a>`;
+
 // Hospedagem
 const promo = CONFIG.promo;
 $("#promo").innerHTML = promo ? `
   ${promo.tag ? `<span class="tag">${esc(promo.tag)}</span>` : ""}
-  <h4>${esc(promo.title)}</h4><p>${esc(promo.text)}</p>` : "";
+  <h4>${esc(promo.title)}</h4><p>${esc(promo.text)}</p>
+  ${promo.hours ? `<p class="promo-hours">${esc(promo.hours)}</p>` : ""}
+  ${promo.links ? `<div class="faq-links">${promo.links.map(linkBtn).join("")}</div>` : ""}
+  ${promo.note ? `<p class="promo-note">${esc(promo.note)}</p>` : ""}` : "";
 $("#promo").hidden = !promo;
 $("#stays").innerHTML = CONFIG.stays.map(s => `
   <div class="card stay">
     ${s.tag ? `<span class="tag">${esc(s.tag)}</span>` : ""}
     <h4>${esc(s.name)}</h4><div class="meta">${esc(s.meta)}</div>${s.text ? `<p>${esc(s.text)}</p>` : ""}
-    ${s.links ? `<ul class="stay-links">${s.links.map(l => l.heading ? `<li class="stay-group">${esc(l.heading)}</li>` : `<li><a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>${l.note ? `<span>${esc(l.note)}</span>` : ""}</li>`).join("")}</ul>` : ""}
+    ${s.links ? `<ul class="stay-links">${s.links.map(l => l.heading ? `<li class="stay-group">${esc(l.heading)}</li>` : `<li${l.badge ? ` class="has-badge"` : ""}><a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>${l.badge ? `<b class="badge">${esc(l.badge)}</b>` : ""}${l.note ? `<span>${esc(l.note)}</span>` : ""}</li>`).join("")}</ul>` : ""}
     ${s.link && s.link !== "#" ? `<a class="btn btn-outline" href="${s.link}" target="_blank" rel="noopener">${esc(s.btn || "Ver opção")}</a>` : ""}
   </div>`).join("");
+const carIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 6c-.2-.6-.8-1-1.4-1h-11c-.7 0-1.2.4-1.4 1L3 12v8c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-1h12v1c0 .6.4 1 1 1h1c.6 0 1-.4 1-1v-8l-2.1-6ZM6.5 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm11 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3ZM5 11l1.5-4.5h11L19 11H5Z"/></svg>`;
 const tips = CONFIG.tips;
 $("#tips").innerHTML = `
   <h3>${esc(tips.title)}</h3><p class="tips-intro">${esc(tips.intro)}</p>
+  ${tips.car ? `<p class="tips-car">${carIcon}<span>${esc(tips.car)}</span></p>` : ""}
   <div class="tips-grid">${tips.groups.map(g => `
-    <div><h4>${esc(g.title)}</h4><ul>${g.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+    <div><h4>${esc(g.title)}</h4><ul>${g.items.map(i => typeof i === "string" ? `<li>${esc(i)}</li>` : `<li>${esc(i.name)}${i.badge ? `<b class="badge">${esc(i.badge)}</b>` : ""}${i.note ? `<span class="tip-note">${esc(i.note)}</span>` : ""}</li>`).join("")}</ul></div>`).join("")}
   </div>`;
 
 // Presentes
@@ -793,8 +840,7 @@ $("#gifts").addEventListener("click", e => {
 });
 
 // FAQ
-const waIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
-$("#faqList").innerHTML = CONFIG.faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p>${f.links ? `<div class="faq-links">${f.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${waIcon}${esc(l.label)}</a>`).join("")}</div>` : ""}${f.note ? `<p class="faq-note">${esc(f.note)}</p>` : ""}</details>`).join("");
+$("#faqList").innerHTML = CONFIG.faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p>${f.links ? `<div class="faq-links">${f.links.map(linkBtn).join("")}</div>` : ""}${f.note ? `<p class="faq-note">${esc(f.note)}</p>` : ""}</details>`).join("");
 
 // Animação de entrada
 const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold: .12 }) : null;

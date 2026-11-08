@@ -25,6 +25,7 @@
     --sans: "Montserrat", system-ui, sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
   body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
   img { max-width: 100%; display: block; }
@@ -276,6 +277,31 @@
   footer .monogram { font-size: 42px; color: #F3EDE3; display: block; }
   footer p { font-size: 13px; letter-spacing: .1em; margin-top: 8px; }
 
+  /* Botão de música (fixo no canto; só toca com clique) */
+  .music-btn { position: fixed; right: 18px; bottom: 18px; z-index: 60; display: flex; align-items: center; height: 48px; min-width: 48px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--line); background: rgba(252,252,250,.94); backdrop-filter: blur(8px); color: var(--accent-dark); box-shadow: 0 6px 20px rgba(31,42,34,.14); transition: box-shadow .2s; }
+  .music-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .music-icon { width: 20px; height: 20px; display: grid; place-items: center; flex: none; }
+  .music-icon svg { width: 20px; height: 20px; fill: currentColor; }
+  .music-label { max-width: 0; overflow: hidden; white-space: nowrap; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; transition: max-width .4s ease, margin .4s ease; }
+  .music-btn.show-label .music-label, .music-btn:focus-visible .music-label { max-width: 240px; margin-left: 10px; }
+  @media (hover: hover) {
+    .music-btn:hover { box-shadow: 0 8px 26px rgba(31,42,34,.2); }
+    .music-btn:hover .music-label { max-width: 240px; margin-left: 10px; }
+  }
+  .music-bars { display: none; align-items: flex-end; gap: 2px; height: 16px; }
+  .music-bars i { width: 3px; height: 6px; background: currentColor; border-radius: 1px; animation: music-eq 1s ease-in-out infinite; }
+  .music-bars i:nth-child(2) { animation-delay: -.4s; }
+  .music-bars i:nth-child(3) { animation-delay: -.7s; }
+  @keyframes music-eq { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+  .music-btn.playing .music-bars { display: flex; }
+  .music-btn.playing svg { display: none; }
+  @media (prefers-reduced-motion: reduce) { .music-bars i { animation: none; height: 10px; } .music-bars i:nth-child(2) { height: 15px; } }
+  .music-card { position: fixed; right: 18px; bottom: 78px; z-index: 60; width: min(340px, calc(100vw - 36px)); border-radius: 12px; overflow: hidden; background: #282828; box-shadow: 0 10px 30px rgba(31,42,34,.25); }
+  .music-card::before { content: "Carregando música…"; position: absolute; inset: 0; display: grid; place-items: center; color: #CFCFCF; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .music-card iframe { display: block; border: 0; position: relative; z-index: 1; }
+  .music-loading { min-height: 80px; }
+  @media (min-width: 600px) { .music-loading { min-height: 152px; } }
+
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s ease, transform .8s ease; }
   .reveal.in { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } .spinner, .round-icon::after { animation: none; } }
@@ -394,6 +420,16 @@
   <p id="footerDate"></p>
 </footer>
 
+<!-- Botão de música e cartão do Spotify (CONFIG.music) -->
+<div class="music-card" id="musicCard" hidden><div id="musicEmbed" class="music-loading"></div></div>
+<button class="music-btn" id="musicBtn" type="button" aria-controls="musicCard" aria-expanded="false" hidden>
+  <span class="music-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
+    <span class="music-bars"><i></i><i></i><i></i></span>
+  </span>
+  <span class="music-label" id="musicLabel"></span>
+</button>
+
 <!-- Modal de presente -->
 <div class="modal" id="giftModal" role="dialog" aria-modal="true" aria-labelledby="gm-title">
   <div class="modal-box">
@@ -423,6 +459,15 @@ const CONFIG = {
   heroPhotos: ["fotos/header-1.webp", "fotos/header-2.webp", "fotos/header-3.webp"],
   // Foto P&B à direita da contagem
   bandPhoto: "fotos/pedido-tml.webp",
+
+  // Música: o botão no canto abre um cartão do Spotify com a faixa (só toca quando o convidado clica).
+  // Quem não está logado no Spotify ouve 30 segundos. Para trocar, copie o link da faixa no Spotify
+  // (Compartilhar > Copiar link) e use o código depois de /track/ em spotify:track:<código>.
+  music: {
+    spotifyUri: "spotify:track:7m9WM0heHpmLZhwgHHXONZ",
+    title: "Ordinary",
+    artist: "Edward Ong e Guus Dielissen"
+  },
 
   story: {
     preview: 3,   // parágrafos visíveis antes do "Continuar lendo"
@@ -656,6 +701,55 @@ $("#bandPhoto").alt = `${CONFIG.couple.a} e ${CONFIG.couple.b}`;
 $("#heroCity").textContent = CONFIG.city;
 $("#footerDate").textContent = `${shortDate} · ${CONFIG.city}`;
 document.title = `${CONFIG.couple.a} & ${CONFIG.couple.b} · ${shortDate}`;
+
+// Música: o botão abre o cartão do Spotify e tenta tocar; fechar o cartão ou trocar de aba pausa.
+// O player do Spotify só é carregado no primeiro clique (nada é baixado para quem não clica).
+const music = CONFIG.music;
+if (music) {
+  const btn = $("#musicBtn"), label = $("#musicLabel"), card = $("#musicCard");
+  let player = null, loading = false, playing = false, resumeOnReturn = false;
+  const sync = () => {
+    const open = !card.hidden;
+    btn.classList.toggle("playing", playing);
+    btn.setAttribute("aria-expanded", String(open));
+    btn.setAttribute("aria-label", open ? `Fechar a música ${music.title}` : `Ouvir ${music.title}, de ${music.artist}`);
+    label.textContent = open ? "Fechar música" : `Ouvir ${music.title}`;
+  };
+  const loadPlayer = () => {
+    loading = true;
+    window.onSpotifyIframeApiReady = api => {
+      api.createController($("#musicEmbed"), { uri: music.spotifyUri, width: "100%", height: innerWidth < 600 ? 80 : 152 }, c => {
+        player = c;
+        c.addListener("ready", () => { if (!card.hidden) c.play(); });
+        c.addListener("playback_update", e => { playing = !e.data.isPaused; sync(); });
+      });
+    };
+    const sc = document.createElement("script");
+    sc.src = "https://open.spotify.com/embed/iframe-api/v1";
+    sc.async = true;
+    document.body.appendChild(sc);
+  };
+  const setOpen = open => {
+    card.hidden = !open;
+    if (open) { if (player) player.resume(); else if (!loading) loadPlayer(); }
+    else if (player) player.pause();
+    sync();
+  };
+  btn.addEventListener("click", () => setOpen(card.hidden));
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !card.hidden) setOpen(false); });
+  document.addEventListener("visibilitychange", () => {
+    if (!player) return;
+    if (document.hidden) { resumeOnReturn = playing; player.pause(); }
+    else if (resumeOnReturn) { resumeOnReturn = false; player.resume(); }
+  });
+  sync();
+  btn.hidden = false;
+  // Convite "Ouvir ..." aberto por alguns segundos só em telas maiores (no celular cobriria os botões da contagem)
+  if (matchMedia("(min-width: 768px)").matches) {
+    btn.classList.add("show-label");
+    setTimeout(() => btn.classList.remove("show-label"), 6000);
+  }
+}
 
 // Contagem regressiva
 function tick() {

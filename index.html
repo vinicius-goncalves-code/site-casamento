@@ -334,7 +334,7 @@
       <div class="countdown" id="countdown" aria-live="off"></div>
       <div class="hero-ctas">
         <a href="#presentes" class="btn btn-light">Lista de presentes</a>
-        <a class="btn" id="rsvpBtn" target="_blank" rel="noopener" hidden>Confirme sua presença</a>
+        <a class="btn" id="rsvpBtn" hidden>Confirme sua presença</a>
       </div>
     </div>
     <div class="band-photo-wrap"><img class="band-photo" id="bandPhoto" alt=""></div>
@@ -656,12 +656,12 @@ const CONFIG = {
   // Item "Mensagens aos noivos" no menu do topo: mural de recados gratuito da iCasei (abre em nova aba)
   messagesUrl: "https://sites.icasei.com.br/aniadnyevinicius/messages",
 
-  // Botão "Confirme sua presença" na faixa da contagem: WhatsApp da Papel de Sonhos Cerimonial com a mensagem pronta
-  rsvpUrl: "https://wa.me/556599298848?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%2C%20no%20dia%2001%2F05%2F2027.%0A%0ANome(s)%3A%20",
+  // Botão "Confirme sua presença" na faixa da contagem: rola até a pergunta do FAQ com este id e já a deixa aberta
+  rsvpFaq: "confirmacao",
 
-  // links = botões de WhatsApp dentro da resposta; note = frase em destaque no fim
+  // id = âncora da pergunta (usada pelo rsvpFaq); links = botões de WhatsApp dentro da resposta; note = frase em destaque no fim
   faq: [
-    { q: "Confirmação de presença", a: "A confirmação de presença e qualquer dúvida sobre o casamento devem ser feitas diretamente com a nossa assessoria, Papel de Sonhos Cerimonial. Se for algo mais específico, pode falar com a noivinha.",
+    { id: "confirmacao", q: "Confirmação de presença", a: "Não precisa fazer nada agora: em breve, a nossa assessoria, Papel de Sonhos Cerimonial, vai entrar em contato com cada convidado para confirmar a presença. Se tiver alguma dúvida sobre o casamento antes disso, pode falar com o cerimonial. Se for algo mais específico, pode falar com a noivinha.",
       links: [
         { label: "Papel de Sonhos Cerimonial · (65) 9929-8848", url: "https://wa.me/556599298848?text=Ol%C3%A1!%20Sou%20convidado(a)%20do%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%20(01%2F05%2F2027)." },
         { label: "Noivinha · (65) 99213-4221", url: "https://wa.me/5565992134221?text=Ol%C3%A1!%20Sou%20convidado(a)%20do%20casamento%20da%20Aniadny%20e%20do%20Vin%C3%ADcius%20(01%2F05%2F2027)." }
@@ -741,7 +741,12 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 if (CONFIG.messagesUrl) { $("#navMessages a").href = CONFIG.messagesUrl; $("#navMessages").hidden = false; }
-if (CONFIG.rsvpUrl) { $("#rsvpBtn").href = CONFIG.rsvpUrl; $("#rsvpBtn").hidden = false; }
+if (CONFIG.rsvpFaq) {
+  const rsvp = $("#rsvpBtn");
+  rsvp.href = "#" + CONFIG.rsvpFaq;
+  rsvp.hidden = false;
+  rsvp.addEventListener("click", () => { const item = document.getElementById(CONFIG.rsvpFaq); if (item) item.open = true; });
+}
 
 // História
 const { paragraphs: storyParas, preview: storyPreview = storyParas.length } = CONFIG.story;
@@ -925,7 +930,7 @@ $("#gifts").addEventListener("click", e => {
 });
 
 // FAQ
-$("#faqList").innerHTML = CONFIG.faq.map(f => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p>${f.links ? `<div class="faq-links">${f.links.map(linkBtn).join("")}</div>` : ""}${f.note ? `<p class="faq-note">${esc(f.note)}</p>` : ""}</details>`).join("");
+$("#faqList").innerHTML = CONFIG.faq.map(f => `<details${f.id ? ` id="${esc(f.id)}"` : ""}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p>${f.links ? `<div class="faq-links">${f.links.map(linkBtn).join("")}</div>` : ""}${f.note ? `<p class="faq-note">${esc(f.note)}</p>` : ""}</details>`).join("");
 
 // Animação de entrada
 const io = "IntersectionObserver" in window ? new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }), { threshold: .12 }) : null;

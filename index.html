@@ -656,6 +656,10 @@ const CONFIG = {
   // Item "Mensagens aos noivos" no menu do topo: mural de recados gratuito da iCasei (abre em nova aba)
   messagesUrl: "https://sites.icasei.com.br/aniadnyevinicius/messages",
 
+  // Contador de acessos (GoatCounter: sem cookies, sem dados pessoais). Painel: https://aniadnyevinicius.goatcounter.com
+  // Conta as visitas e os cliques em Presentear, lista da iCasei, links externos, WhatsApp, agenda, confirmação e música.
+  analytics: { goatcounter: "https://aniadnyevinicius.goatcounter.com/count" },
+
   // Botão "Confirme sua presença" na faixa da contagem: rola até a pergunta do FAQ com este id e já a deixa aberta
   rsvpFaq: "confirmacao",
 
@@ -696,6 +700,22 @@ $("#heroCity").textContent = CONFIG.city;
 $("#footerDate").textContent = `${shortDate} · ${CONFIG.city}`;
 document.title = `${CONFIG.couple.a} & ${CONFIG.couple.b} · ${shortDate}`;
 
+// Contador de acessos (CONFIG.analytics). O GoatCounter não conta acessos em localhost.
+// track() registra um clique como evento; se o contador for bloqueado, nada acontece.
+const track = name => { try { window.goatcounter?.count?.({ path: name, title: name, event: true }); } catch (e) {} };
+if (CONFIG.analytics?.goatcounter) {
+  window.goatcounter = { path: () => location.pathname || "/" }; // ignora ?parâmetros e #âncoras: o site é uma página só
+  const s = document.createElement("script");
+  s.async = true; s.src = "https://gc.zgo.at/count.js"; s.dataset.goatcounter = CONFIG.analytics.goatcounter;
+  document.head.append(s);
+  // Links externos (mapa, hotéis, WhatsApp, telefone, iCasei): o nome do evento é o texto do link
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href^='http'], a[href^='tel:']");
+    if (!a || a.id === "gm-go") return;
+    track("Link › " + a.textContent.replace(/\s+/g, " ").replace(/\s*↗$/, "").trim());
+  });
+}
+
 // Música: só começa com o clique do convidado; pausa ao trocar de aba e volta ao retornar
 const music = CONFIG.music;
 if (music) {
@@ -711,7 +731,7 @@ if (music) {
     btn.setAttribute("aria-label", label);
     btn.title = label;
   };
-  btn.addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
+  btn.addEventListener("click", () => { if (audio.paused) { audio.play().catch(() => {}); track("Música › tocar"); } else audio.pause(); });
   audio.addEventListener("play", sync);
   audio.addEventListener("pause", sync);
   document.addEventListener("visibilitychange", () => {
@@ -745,7 +765,7 @@ if (CONFIG.rsvpFaq) {
   const rsvp = $("#rsvpBtn");
   rsvp.href = "#" + CONFIG.rsvpFaq;
   rsvp.hidden = false;
-  rsvp.addEventListener("click", () => { const item = document.getElementById(CONFIG.rsvpFaq); if (item) item.open = true; });
+  rsvp.addEventListener("click", () => { const item = document.getElementById(CONFIG.rsvpFaq); if (item) item.open = true; track("Confirme sua presença"); });
 }
 
 // História
@@ -802,6 +822,7 @@ $("#infoGrid").innerHTML = CONFIG.info.map(it => `
 $("#events").addEventListener("click", e => {
   const b = e.target.closest("[data-ics]"); if (!b) return;
   const ev = CONFIG.events[+b.dataset.ics];
+  track("Adicionar à agenda");
   const [hh, mm] = ev.time.replace("h", ":").split(":").map(Number);
   const start = new Date(eventDate); start.setUTCHours(hh + 4, mm || 0, 0); // Cuiabá = UTC-4
   const end = new Date(start.getTime() + 5 * 36e5);
@@ -925,9 +946,12 @@ $("#gifts").addEventListener("click", e => {
   $("#gm-name").textContent = g.name;
   $("#gm-sum").textContent = `${brl(g.price)} · Pix ou cartão em até ${CONFIG.maxInstallments}x`;
   $("#gm-go").href = CONFIG.giftStoreUrl;
+  modal.dataset.gift = g.name;
   modal.classList.add("open");
   setTimeout(() => $("#gm-go").focus(), 50);
+  track("Presentear › " + g.name);
 });
+$("#gm-go").addEventListener("click", () => track("Lista iCasei › " + modal.dataset.gift));
 
 // FAQ
 $("#faqList").innerHTML = CONFIG.faq.map(f => `<details${f.id ? ` id="${esc(f.id)}"` : ""}><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p>${f.links ? `<div class="faq-links">${f.links.map(linkBtn).join("")}</div>` : ""}${f.note ? `<p class="faq-note">${esc(f.note)}</p>` : ""}</details>`).join("");
